@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-//import mongodb from './Controllers/DatabaseController.js';
+import mongodb from './controller/DatabaseController.js';
 import routes from './routes/routes.js'
 import path from "path"
 import { fileURLToPath } from 'url';
@@ -22,9 +22,9 @@ app.use((req,res,next) => {
     res.header('Access-Control-Allow-cREDENTIALS', 'true');
     next();
 })
-console.log(process.env.NODE_ENV);
+console.log(process.env.TEST);
 const createServer = async () =>{
-    // await mongodb.connect();
+    await mongodb.connect();
     app.listen(port, () => console.log(`========== Server Started At Port ${port} ==========`))
 }
 
