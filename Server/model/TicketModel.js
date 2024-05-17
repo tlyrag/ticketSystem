@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema({
-    id: {type: Number, required:true},
     title:{type:String, required: true},
     urgency:{type:String,required:true},
     type:{type:String,required:true},

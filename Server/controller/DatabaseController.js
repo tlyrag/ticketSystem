@@ -7,7 +7,7 @@ import 'dotenv/config'
 const connect = async () => {
     try {
         
-        await mongoose.connect(process.env.DBURI);
+        await mongoose.connect(process.env.DBURI,{ useNewUrlParser: true, useUnifiedTopology: true });
         console.log('Connected to MongoDB');
     }
     catch(error) {
@@ -15,30 +15,36 @@ const connect = async () => {
     }
 }
 
-// const getAllProducts = async () =>{;
-//     const product = await dbModel.Product.find()
-//     return product
-//     }
-// const getProductById = async (id) =>{
+const getAllTickets = async () =>{;
+    try {
+        const ticket = await TicketModel.ticket.find();
+        return ticket
+    } 
+    catch(error) {
+        return error;
+    }
+    }
+const getTicketById = async (id) =>{
    
-//     const product = await dbModel.Product.findOne({id:id})
-//     return product
-// } 
+    const ticket = await TicketModel.ticket.findOne({_id:id})
+    return ticket
+} 
 
-// const addToCart = async (item) => {
-//     const { title, price, image } = item;
-//     const productId = item.id;
-//     console.log(item)
-//     const newItem = new dbModel.Cart({
-//         productId,
-//         title,
-//         price,
-//         image
-//         })
-//     console.log(newItem)
-//         await newItem.save().catch(err=> console.log(`Error saving data: ${err}`));
-       
-// }
+const addTicket = async (ticket) => {
+    const { title, urgency, type,description,creationDate,completionDateDate } = ticket;
+
+    const newTicket = new TicketModel.ticket({
+        title, 
+        urgency, 
+        type,
+        description,
+        creationDate,
+        completionDateDate
+        })
+    console.log(newTicket)
+        await newTicket.save().catch(err=> console.log(`Error saving data: ${err}`));
+    
+}
 
 // const createData  = async () => {
 //     testList.data.forEach(async product => {
@@ -68,8 +74,9 @@ const connect = async () => {
 
 const mongodb ={
     connect,
-    // getAllProducts,
-    // createData,
+    addTicket,
+    getAllTickets,
+    getTicketById
     // addToCart,
     // getProductById
 }
