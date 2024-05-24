@@ -35,7 +35,6 @@ export default(app) => {
         
         try {
             const tickets = await DBController.getAllTickets();
-            console.log(tickets)
             res.json(tickets)
         }
         catch(error) {
@@ -92,6 +91,7 @@ export default(app) => {
     app.post('/addTicket',async (req,res) => {
        
         try {
+            console.log(req.body)
             await DBController.addTicket(req.body);
             res.status(200).json({
                 ok: true,
