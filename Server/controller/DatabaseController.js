@@ -31,7 +31,7 @@ const getTicketById = async (id) =>{
 } 
 
 const addTicket = async (ticket) => {
-    const { title, urgency, type,description,creationDate,completionDateDate } = ticket;
+    const { title, urgency, type,description,creationDate,completionDateDate,status,user } = ticket;
 
     const newTicket = new TicketModel.ticket({
         title, 
@@ -39,7 +39,9 @@ const addTicket = async (ticket) => {
         type,
         description,
         creationDate,
-        completionDateDate
+        completionDateDate,
+        status,
+        user
         })
     console.log(newTicket)
         await newTicket.save().catch(err=> console.log(`Error saving data: ${err}`));

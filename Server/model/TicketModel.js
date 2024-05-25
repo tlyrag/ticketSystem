@@ -5,9 +5,17 @@ const ticketSchema = new mongoose.Schema({
     urgency:{type:String,required:true},
     type:{type:String,required:true},
     description:{type:String,required:true},
+    status:{type:String,},
     creationDate:{type:String,require:true},
-    completionDateDate:{type:String},
-
+    assignedTo:{type:String,},
+    assignedDate:{type:String,},
+    completionDate:{type:String},
+    cancelationDate:{type:String},
+    createdby:{type:String},
+    comments: [{
+        user:String,
+        message:String
+    }]
 
 })
 
