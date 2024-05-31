@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiController from '../../Controller/apiController';
-const NewTicket = () => {
+const NewTicket = (props) => {
     const [ticket, setTicket] = useState({
         title: '',
         description: '',
@@ -23,8 +23,9 @@ const NewTicket = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await apiController.addTicket(ticket);
-         navigate('/')
-        console.log('Submitted', ticket);
+        props.fetchTicket();
+        navigate('/')
+
     };
 
     return (
