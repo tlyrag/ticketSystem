@@ -107,5 +107,66 @@ export default(app) => {
         }
     })
     
+    app.patch('/completeTicket/:id',async (req,res) => {
+       
+        try {
+            const id = req.params.id;
+            console.log(id)
+            await DBController.completeTicket(id);
+            res.status(200).json({
+                ok: true,
+                message: "Ticket Completed successfully"
+            });
+        }
+        catch(error) {
+            res.status(500).json({
+                ok: false,
+                message: "Failed to add ticket due to an internal error",
+                error: error.message  // Optionally include error details or customize error messages based on the error type or environment
+            });
+        }
+    })
+    
+    app.patch('/cancelTicket/:id',async (req,res) => {
+       
+        try {
+            const id = req.params.id;
+            await DBController.cancelTicket(id);
+            res.status(200).json({
+                ok: true,
+                message: "Ticket Cancelled successfully"
+            });
+        }
+        catch(error) {
+            res.status(500).json({
+                ok: false,
+                message: "Failed to add ticket due to an internal error",
+                error: error.message  // Optionally include error details or customize error messages based on the error type or environment
+            });
+        }
+    })
+
+    app.patch('/assignTicket/:id',async (req,res) => {
+       
+        try {
+            const id = req.params.id;
+            const user = req.body.user
+            
+            await DBController.assignToMe(id,user);
+            res.status(200).json({
+                ok: true,
+                message: "Ticket Assigned successfully"
+            });
+        }
+        catch(error) {
+            res.status(500).json({
+                ok: false,
+                message: "Failed to add ticket due to an internal error",
+                error: error.message  // Optionally include error details or customize error messages based on the error type or environment
+            });
+        }
+    })
+
 
 }
+

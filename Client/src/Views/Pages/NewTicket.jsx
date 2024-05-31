@@ -7,7 +7,8 @@ const NewTicket = () => {
         description: '',
         type: '',
         urgency: '',
-        creationDate: new Date().toISOString().slice(0, 10)
+        creationDate: new Date().toISOString().slice(0, 10),
+        status:'Created'
     });
 
     const navigate = useNavigate();

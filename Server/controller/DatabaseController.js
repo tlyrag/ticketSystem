@@ -48,6 +48,54 @@ const addTicket = async (ticket) => {
     
 }
 
+const cancelTicket = async (id) => {
+    try {
+        
+        const ticket = await TicketModel.ticket.findByIdAndUpdate(id, {
+            status: 'Cancelled',
+            cancelationDate: new Date().toISOString(),
+            completionDate:"-"
+        }, { new: true });
+        return ticket
+
+    } catch (err) {
+       return err
+    }
+}
+
+const assignToMe = async(id,user) => {
+    try {
+        
+        const ticket = await TicketModel.ticket.findByIdAndUpdate(id, {
+            status: 'Working',
+            assignedTo:user,
+            assignedDate: new Date().toISOString(),
+            cancelationDate:"-",
+            completionDate:"-"
+        }, { new: true });
+        return ticket
+
+    } catch (err) {
+       return err
+    }
+}
+
+const completeTicket = async (id) => {
+    try {
+        
+        const ticket = await TicketModel.ticket.findByIdAndUpdate(id, {
+            status: 'Completed',
+            completionDate: new Date().toISOString(),
+            cancelationDate: ''
+        }, { new: true });
+        console.log(id)
+        return ticket
+
+    } catch (err) {
+        
+       return err
+    }
+}
 // const createData  = async () => {
 //     testList.data.forEach(async product => {
 //         const id = product.id;
@@ -78,7 +126,10 @@ const mongodb ={
     connect,
     addTicket,
     getAllTickets,
-    getTicketById
+    getTicketById,
+    cancelTicket,
+    completeTicket,
+    assignToMe
     // addToCart,
     // getProductById
 }

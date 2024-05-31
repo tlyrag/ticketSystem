@@ -23,6 +23,16 @@ function App() {
       fetchTicket();
     }, [Tickets]);
 
+    const filterTicket = (searchterm) => {
+      const lowercasedSearch = searchterm.toLowerCase();
+      
+      let filteredTickets = Tickets.map(ticket => {
+        return Object.values(ticket).some(val => 
+          String(val).toLowerCase().includes(lowercasedSearch)) 
+      }) 
+      setTickets(filteredTickets)
+    }
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow flex">
@@ -31,9 +41,9 @@ function App() {
        
           <Sidebar />
         </div>
-        <div className="w-10/12 p-4"> 
+        <div className="w-10/12 p-4 bg-pink"> 
         <Routes>
-            <Route path="/" element={<MainContent Tickets={Tickets} isLoading={isLoading}/>} />
+            <Route path="/" element={<MainContent Tickets={Tickets} isLoading={isLoading} filterTickets={filterTicket}/>} />
             <Route path="/new-ticket" element={<NewTicket/>} />
           </Routes>
         </div>

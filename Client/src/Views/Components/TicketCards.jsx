@@ -1,10 +1,47 @@
+import TicketDetailsModal from "./TicketDetailsModal";
+import  { useState } from 'react';
+
+const statusColors = {
+    Created: "text-purple",
+    Working: "text-blue",
+    Cancelled: "text-red",
+    Completed: "text-green"
+};
+
 const TicketCards =(props) => {
+    const [selectedTicket, setSelectedTicket] = useState(null);
+    
+    const handleRowClick = (ticket) => {
+        setSelectedTicket(ticket);
+    };
     
     if(!props.isLoading) {
-    
-        return props.Tickets.map((ticket) => {
-                return TicketCard(ticket);
-            })
+     return (
+        <div className="container mx-auto px-4 py-4">
+        <table className="min-w-full table-auto drop-shadow-3xl">
+            <thead>
+                <tr className="bg-purple text-white uppercase text-sm leading-normal text-align-left">
+                    <th className="py-3 px-6 text-left">Created by</th>
+                    <th className="py-3 px-6 text-left">Title</th>
+                    <th className="py-3 px-6 text-left">Type</th>
+                    <th className="py-3 px-6 text-left">Urgency</th>
+                    <th className="py-3 px-6 text-left">Status</th>
+                    <th className="py-3 px-6 text-left">Assigned To</th>
+                    <th className="py-3 px-6 text-center">Creation Date</th>
+                    <th className="py-3 px-6 text-center">Completion Date</th>
+                </tr>
+            </thead>
+            <tbody className="text-gray-600   text-lg">
+                {props.Tickets.sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate)).slice(0, 10).map((ticket, index) => 
+                     
+                     <TicketCard ticket={ticket} key={index} handleRowClick={handleRowClick}/>
+                )}
+            </tbody>
+        </table>
+        {selectedTicket && <TicketDetailsModal ticket={selectedTicket}  onClose={() => setSelectedTicket(null)} />}
+    </div>
+    )
+
        
     }
     return (
@@ -13,24 +50,21 @@ const TicketCards =(props) => {
     </>)
 }
 
-const TicketCard = (ticket) => {
+
+const TicketCard = ({key,ticket,handleRowClick}) => {
+
+
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white my-2 ">
-            <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">{ticket.title}</div>
-                <p className="text-gray-700 text-base">
-                    {ticket.description}
-                </p>
-            </div>
-            <div className="px-6 pt-4 pb-2">
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Type: {ticket.type}</span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Urgency: {ticket.urgency}</span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Created: {ticket.creationDate}</span>
-                {ticket.completionDate && (
-                    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">Completed: {ticket.completionDate}</span>
-                )}
-            </div>
-        </div>
+        <tr key={key} className={`border-b border-gray-200 hover:bg-gray-100 cursor-pointer ${statusColors[ticket.status]}`} onClick={() => handleRowClick(ticket)}>
+            <td className="py-3 px-6 text-left whitespace-nowrap">{ticket.createdby}</td>
+            <td className="py-3 px-6 text-left whitespace-nowrap">{ticket.title}</td>
+            <td className="py-3 px-6 text-left">{ticket.type}</td>
+            <td className="py-3 px-6 text-left">{ticket.urgency}</td>
+            <td className={`py-3 px-6 text-left  `}><b>{ticket.status}</b></td>
+            <td className="py-3 px-6 text-left">{ticket.assignedTo}</td>
+            <td className="py-3 px-6 text-center">{ticket.creationDate}</td>
+            <td className="py-3 px-6 text-center">{ticket.completionDate}</td>
+        </tr>
     );
 };
 

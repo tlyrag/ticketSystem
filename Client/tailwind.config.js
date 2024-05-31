@@ -7,10 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        red:'#ff00ff',
+        red:'#880015',
         purple:'#4B367C',
-        blue:'#56F1FF',
+        blue:'#06088A',
+        green:'#377D22',
         white:'#FEFCFD',
+        pink:'#C2AFF0',
         neon: { 
           100: '#ccff00', 
           200: '#00ff66', 

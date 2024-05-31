@@ -12,23 +12,25 @@ const tickets = () =>{
 const addTicket= () =>{
     return `${getApiUrl()}/addTicket`
 } 
-// const categoryApiUrl =() => {
-//     return `${getApiUrl()}/products/categories`
-// }
-
-// const singleProductUrl = (id) => {
-//     return `${getApiUrl()}/products/${id}`
-// }
-// const productByCategoryUrl =(category) => {
-//     return `${getApiUrl()}/products/category/${category}`
-// }
-
+const completeTicket= (id) =>{
+    
+    return `${getApiUrl()}/completeTicket/${id}`
+} 
+const cancelTicket= (id) =>{
+    return `${getApiUrl()}/cancelTicket/${id}`
+} 
+const assignToMeTicket= (id) =>{
+    return `${getApiUrl()}/assignTicket/${id}`
+} 
 
 
 
 export default {
     getApiUrl,
     tickets,
-    addTicket
+    addTicket,
+    completeTicket,
+    cancelTicket,
+    assignToMeTicket
 
 }
