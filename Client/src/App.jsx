@@ -11,27 +11,47 @@ function App() {
   
   const [Tickets, setTickets] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+  const [hasTickets, sethasTickets] = useState(false);
+  
+  
+  const fetchTicket = async () => {
+    let ticks = await apiController.fetchAllTickets();
+    setTickets(ticks);
+    setisLoading(false);
+    sethasTickets(true);
+
+  }
+
+
+  const filterTicket = async (searchterm) => {
+    const lowercasedSearch = searchterm.toLowerCase();
+    let filteredTickets = Tickets.filter(ticket => {
+      
+      let title = ticket.title.toLowerCase().includes(lowercasedSearch);
+      let descriptiopn = ticket.description.toLowerCase().includes(lowercasedSearch);
+
+       if(title || descriptiopn) {
+         return true
+       }
+       return false
+
+    }) 
+    
+
+    if(filteredTickets.length>1) {
+      setTickets(filteredTickets)
+      sethasTickets(true)
+    } else {
+      await fetchTicket();
+      sethasTickets(false)
+    }
+
+  }
 
     useEffect(() => {
-      const fetchTicket = async () => {
-        let ticks = await apiController.fetchAllTickets();
-        setTickets(ticks);
-        setisLoading(false);
-    
-      }
-
       fetchTicket();
-    }, [Tickets]);
+    }, []);
 
-    const filterTicket = (searchterm) => {
-      const lowercasedSearch = searchterm.toLowerCase();
-      
-      let filteredTickets = Tickets.map(ticket => {
-        return Object.values(ticket).some(val => 
-          String(val).toLowerCase().includes(lowercasedSearch)) 
-      }) 
-      setTickets(filteredTickets)
-    }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -43,8 +63,8 @@ function App() {
         </div>
         <div className="w-10/12 p-4 bg-pink"> 
         <Routes>
-            <Route path="/" element={<MainContent Tickets={Tickets} isLoading={isLoading} filterTickets={filterTicket}/>} />
-            <Route path="/new-ticket" element={<NewTicket/>} />
+            <Route path="/" element={ <MainContent Tickets={Tickets} isLoading={isLoading} filterTickets={filterTicket} hasTickets={hasTickets}/> } />
+            <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket}/>} />
           </Routes>
         </div>
         </Router>

@@ -5,7 +5,7 @@ const MainContent = (props) => {
     return (
         <div className="h-full bg-white drop-shadow-3xl">
             <FilterTicket filterTickets={props.filterTickets}/>
-            <TicketCards Tickets={props.Tickets} isLoading={props.isLoading}/>
+            {props.hasTickets ? <TicketCards Tickets={props.Tickets} isLoading={props.isLoading}/> : <>No Ticket Found</>}
         </div>
     )
     }
