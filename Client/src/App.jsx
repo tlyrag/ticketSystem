@@ -25,6 +25,7 @@ function App() {
 
   const filterTicket = async (searchterm) => {
     const lowercasedSearch = searchterm.toLowerCase();
+    console.log(lowercasedSearch);
     let filteredTickets = Tickets.filter(ticket => {
       
       let title = ticket.title.toLowerCase().includes(lowercasedSearch);
@@ -37,7 +38,6 @@ function App() {
 
     }) 
     
-
     if(filteredTickets.length>1) {
       setTickets(filteredTickets)
       sethasTickets(true)
@@ -48,6 +48,43 @@ function App() {
 
   }
 
+  const filterTicketByCreateDate = async (createDate) => {
+    
+    let dateFilteredtickets = Tickets.filter(ticket=> {
+      console.log(ticket)  
+      let ticketDate = new Date(ticket.creationDate);
+      let filterDate = new Date(createDate);
+      return ticketDate>=filterDate;
+    })
+
+    if(dateFilteredtickets.length>1) {
+      setTickets(dateFilteredtickets)
+      sethasTickets(true)
+    } else {
+      await fetchTicket();
+      sethasTickets(false)
+    }
+  }
+
+
+
+  const filterTicketByCompleteDate = async (completeDate) => {
+    
+    let dateFilteredtickets = Tickets.filter(ticket=> {
+      
+      let ticketDate = new Date(ticket.completionDate);
+      let filterDate = new Date(completeDate);
+      return ticketDate<=filterDate;
+    })
+
+    if(dateFilteredtickets.length>1) {
+      setTickets(dateFilteredtickets)
+      sethasTickets(true)
+    } else {
+      await fetchTicket();
+      sethasTickets(false)
+    }
+  }
     useEffect(() => {
       fetchTicket();
     }, []);
@@ -63,7 +100,16 @@ function App() {
         </div>
         <div className="w-10/12 p-4 bg-pink"> 
         <Routes>
-            <Route path="/" element={ <MainContent Tickets={Tickets} isLoading={isLoading} filterTickets={filterTicket} hasTickets={hasTickets}/> } />
+            <Route path="/" element={ 
+              <MainContent 
+                Tickets={Tickets} 
+                isLoading={isLoading} 
+                filterTickets={filterTicket} 
+                hasTickets={hasTickets} 
+                filterTicketByCreateDate={filterTicketByCreateDate}
+                filterTicketByCompleteDate={filterTicketByCompleteDate}
+              /> 
+            }/>
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket}/>} />
           </Routes>
         </div>

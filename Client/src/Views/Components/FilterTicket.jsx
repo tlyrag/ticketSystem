@@ -15,13 +15,13 @@ const FilterTicket = (props) => {
         // Handle change in start date
         const handleStartDateChange = (e) => {
             setStartDate(e.target.value);
-            props.filterTickets(e.target.value);
+            props.filterTicketByCreateDate(e.target.value);
         };
     
         // Handle change in end date
         const handleEndDateChange = (e) => {
             setEndDate(e.target.value);
-           props.filterTickets(e.target.value);
+           props.filterTicketByCompleteDate(e.target.value);
         }
     
         // Update filters based on current state

@@ -1,6 +1,10 @@
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiController from '../../Controller/apiController';
+
+const ticketOptions = ["Printer","VPN","Monarch","Quantum","Logic","Other"];
+const urgencyOptions = ["Low","Medium","High"];
+
 const NewTicket = (props) => {
     const [ticket, setTicket] = useState({
         title: '',
@@ -46,9 +50,11 @@ const NewTicket = (props) => {
                 <select id="type" name="type" value={ticket.type} onChange={handleChange}
                     className="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">Select Type</option>
-                    <option value="Bug">Bug</option>
-                    <option value="Feature">Feature</option>
-                    <option value="Task">Task</option>
+                    {ticketOptions.map(option => {
+                        return (
+                            <option value={option}>{option}</option>
+                        )
+                    })}
                 </select>
             </div>
             <div className="mb-4">
@@ -56,9 +62,11 @@ const NewTicket = (props) => {
                 <select id="urgency" name="urgency" value={ticket.urgency} onChange={handleChange}
                     className="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">Select Urgency</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
+                    {urgencyOptions.map(option => {
+                        return (
+                            <option value={option}>{option}</option>
+                        )
+                    })} 
                 </select>
             </div>
             <div className="mb-4">
