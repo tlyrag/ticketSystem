@@ -1,7 +1,5 @@
-const getApiUrl = (env) => {
-    if(env==="local") {
-        return "http://localhost:5847"
-    }
+const getApiUrl = () => {
+    //return process.env.REACT_APP_API_URL || "http://localhost:5847"
     return "http://localhost:5847"
  
 }
@@ -22,7 +20,10 @@ const cancelTicket= (id) =>{
 const assignToMeTicket= (id) =>{
     return `${getApiUrl()}/assignTicket/${id}`
 } 
+const addComment = (id) => {
 
+    return `${getApiUrl()}/addComment/${id}`
+}
 
 
 export default {
@@ -31,6 +32,7 @@ export default {
     addTicket,
     completeTicket,
     cancelTicket,
-    assignToMeTicket
+    assignToMeTicket,
+    addComment
 
 }

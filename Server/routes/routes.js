@@ -162,8 +162,29 @@ export default(app) => {
             res.status(500).json({
                 ok: false,
                 message: "Failed to add ticket due to an internal error",
-                error: error.message  // Optionally include error details or customize error messages based on the error type or environment
+                error: error.message  
             });
+        }
+    })
+    app.patch('/addComment/:id' , async(req,res) => {
+        try {
+          
+            const id = req.params.id;
+            const comment = {
+                user:req.body.user.name,
+                message:req.body.message
+            }
+            await DBController.addComment(id,comment);
+            res.status(200).json({
+                ok: true,
+                message: "Added Comment successfully"
+            });
+        } catch (error)    {
+            res.status(500).json({
+                ok: false,
+                message: "Failed to add comment due to an internal error",
+                error: error.message 
+            }) 
         }
     })
 

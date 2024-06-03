@@ -7,16 +7,25 @@ import NewTicket from './Views/Pages/NewTicket';
 import { useState,useEffect } from 'react';
 import apiController from './Controller/apiController';
 
+/// to be replaced once login is created
+const loggedUser = {
+  name: "John Doe",
+  imageUrl: "/path-to-user-image.jpg" 
+};
+
+
+
 function App() {
   
   const [Tickets, setTickets] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [hasTickets, sethasTickets] = useState(false);
-  
+  const [user, setuser] = useState("");
   
   const fetchTicket = async () => {
     let ticks = await apiController.fetchAllTickets();
     setTickets(ticks);
+    setuser(loggedUser)
     setisLoading(false);
     sethasTickets(true);
 
@@ -86,6 +95,7 @@ function App() {
     }
   }
     useEffect(() => {
+      console.log()
       fetchTicket();
     }, []);
 
@@ -95,8 +105,7 @@ function App() {
       <div className="flex-grow flex">
       <Router>
         <div className="w-2/12">
-       
-          <Sidebar />
+          <Sidebar user={user} />
         </div>
         <div className="w-10/12 p-4 bg-pink"> 
         <Routes>
@@ -108,9 +117,10 @@ function App() {
                 hasTickets={hasTickets} 
                 filterTicketByCreateDate={filterTicketByCreateDate}
                 filterTicketByCompleteDate={filterTicketByCompleteDate}
+                user={user}
               /> 
             }/>
-            <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket}/>} />
+            <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
           </Routes>
         </div>
         </Router>
