@@ -1,13 +1,10 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-const SideBar = () => {
+const SideBar = (props) => {
     const location = useLocation(); 
 
     // Placeholder user data, replace with real data as needed
-    const user = {
-        name: "John Doe",
-        imageUrl: "/path-to-user-image.jpg" 
-    };
+
 
     return (
         <div className="bg-purple text-white h-full border-purple-500 border-r-4 flex flex-col">
@@ -22,8 +19,8 @@ const SideBar = () => {
             <div className="bg-white text-purple flex-grow flex flex-col">
                 {/* User Profile */}
                 <div className="flex flex-col items-center py-5">
-                    <img src={user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
-                    <p className="mt-2 font-semibold">{user.name}</p>
+                    <img src={props.user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
+                    <p className="mt-2 font-semibold">{props.user.name}</p>
                 </div>
 
                 {/* Navigation Menu */}

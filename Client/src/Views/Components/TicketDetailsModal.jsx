@@ -1,18 +1,20 @@
 import React, { useState,useEffect } from 'react';
 import apiController from '../../Controller/apiController';
-const TicketDetailsModal = ({ ticket, onClose }) => {
+const TicketDetailsModal = ({ ticket, onClose,user }) => {
     const [comment, setComment] = useState('');
+
+    useEffect(() => {
+        console.log(ticket)    
+    }, []);
+
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
     };
 
     const submitComment = async () => {
-        const updatedTicket = {
-            ...ticket,
-            comments: [...(ticket.comments || []), comment]
-        };
-        // Assuming you have an API method to update the ticket
+        
+        await apiController.addComments(ticket._id,{user:user, message:comment})
         // await apiController.updateTicket(ticket._id, updatedTicket);
         console.log('Comment submitted:', comment);
         setComment(''); // Reset comment input after submission
@@ -77,10 +79,9 @@ const TicketDetailsModal = ({ ticket, onClose }) => {
     );
 };
 
+
+/////////////// Ticket Timeline Component showing inside the model  /////////////////////////
 const StatusTimeline = ({ Ticket }) => {
-
-    
-
 
     const statusOptions = ["Created", "Working", "Completed","Cancelled"];
     const currentStatusIndex = statusOptions.indexOf(Ticket.status);

@@ -38,7 +38,7 @@ const TicketCards =(props) => {
                 )}
             </tbody>
         </table>
-        {selectedTicket && <TicketDetailsModal ticket={selectedTicket}  onClose={() => setSelectedTicket(null)} />}
+        {selectedTicket && <TicketDetailsModal ticket={selectedTicket} user={props.user} onClose={() => setSelectedTicket(null)} />}
     </div>
     )
 

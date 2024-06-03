@@ -96,6 +96,24 @@ const completeTicket = async (id) => {
        return err
     }
 }
+
+const addComment = async (id,comment) => {
+    try { 
+        await TicketModel.ticket.updateOne(
+            {_id:id},
+            {$push: {
+                comments : {
+                    user: comment.user,
+                    message:comment.message
+                }
+            }}
+        );
+    } catch(error) {
+        console.log(`Failed to add comment`)
+    }
+
+
+}
 // const createData  = async () => {
 //     testList.data.forEach(async product => {
 //         const id = product.id;
@@ -129,7 +147,8 @@ const mongodb ={
     getTicketById,
     cancelTicket,
     completeTicket,
-    assignToMe
+    assignToMe,
+    addComment
     // addToCart,
     // getProductById
 }

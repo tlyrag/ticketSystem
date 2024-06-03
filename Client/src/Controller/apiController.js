@@ -39,7 +39,7 @@ const cancelTicket =(id) => {
 
     };
     return fetch(apiModel.cancelTicket(id), requestOptions)
-    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    .catch(err=> console.log(`Failed to Cancel TIcket ${err}`))
     
 }
 const assignToMeTicket =(id,user) => {
@@ -49,13 +49,28 @@ const assignToMeTicket =(id,user) => {
         body: JSON.stringify(user)
     };
     return fetch(apiModel.assignToMeTicket(id), requestOptions)
-    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    .catch(err=> console.log(`Failed to assign Ticket ${err}`))
     
 }
+
+const addComments = (id,comment) => {
+    console.log(id)
+    console.log(comment)
+    const requestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(comment)
+    };
+    return fetch (apiModel.addComment(id),requestOptions)
+    .catch(err=> console.log(`Failed to addComments ${err}`))
+}
+
+
 export default {
     fetchAllTickets,
     addTicket,
     completeTicket,
     cancelTicket,
-    assignToMeTicket
+    assignToMeTicket,
+    addComments
 }
