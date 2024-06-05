@@ -52,7 +52,7 @@ export default(app) => {
         try {
             const ticket = await DBController.getTicketById(id);
             if (ticket) {
-                res.json({
+                res.status(200).json({
                     ok: true,
                     ticket: ticket
                 });

@@ -9,7 +9,16 @@ const fetchAllTickets = () => {
         console.log(`Failed to fetch Ticket Data ${err}`)
     })
 }
-
+const getTicketById = (id) => {
+  
+    return fetch(apiModel.getTicketById(id))
+    .then(response=>response.json())
+    .then(data=> {
+        return data
+    })
+    .catch(err=> console.log(`Failed to fetch comment: ${err}`))
+   
+}
 const addTicket =(ticket) => {
     const requestOptions = {
         method: 'POST',
@@ -54,8 +63,7 @@ const assignToMeTicket =(id,user) => {
 }
 
 const addComments = (id,comment) => {
-    console.log(id)
-    console.log(comment)
+
     const requestOptions = {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -66,11 +74,13 @@ const addComments = (id,comment) => {
 }
 
 
+
 export default {
     fetchAllTickets,
     addTicket,
     completeTicket,
     cancelTicket,
     assignToMeTicket,
-    addComments
+    addComments,
+    getTicketById
 }
