@@ -24,7 +24,9 @@ const addComment = (id) => {
 
     return `${getApiUrl()}/addComment/${id}`
 }
-
+const getTicketById = (id) => {
+    return  `${getApiUrl()}/ticket/${id}`
+}
 
 export default {
     getApiUrl,
@@ -33,6 +35,7 @@ export default {
     completeTicket,
     cancelTicket,
     assignToMeTicket,
-    addComment
+    addComment,
+    getTicketById
 
 }

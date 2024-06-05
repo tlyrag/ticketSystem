@@ -1,12 +1,22 @@
 import React, { useState,useEffect } from 'react';
 import apiController from '../../Controller/apiController';
 const TicketDetailsModal = ({ ticket, onClose,user }) => {
+    
     const [comment, setComment] = useState('');
+    const [ticketComment, setticketComment] = useState();
+    const [isLoading, setisLoading] = useState(true);
 
     useEffect(() => {
-        console.log(ticket)    
+        fetchComment();
+        
     }, []);
 
+    const fetchComment = async () => {
+        let comments = await apiController.getTicketById(ticket._id)
+        setticketComment(comments.ticket)
+        setisLoading(false);
+        
+    }
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
@@ -16,7 +26,7 @@ const TicketDetailsModal = ({ ticket, onClose,user }) => {
         
         await apiController.addComments(ticket._id,{user:user, message:comment})
         // await apiController.updateTicket(ticket._id, updatedTicket);
-        console.log('Comment submitted:', comment);
+        fetchComment();
         setComment(''); // Reset comment input after submission
     };
     const assignToMe = async () => {
@@ -61,6 +71,7 @@ const TicketDetailsModal = ({ ticket, onClose,user }) => {
                         placeholder="Add a comment..."
                         className="mt-4 w-full p-2 border rounded"
                     />
+                    {isLoading ? <p>Comments</p> :<CommentSection comments = {ticket.comments}/>}
                     <button onClick={submitComment} className="mt-2 bg-purple text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Submit Comment
                     </button>
@@ -75,10 +86,18 @@ const TicketDetailsModal = ({ ticket, onClose,user }) => {
                     </button>
                 </div>
             </div>
+            
         </div>
     );
 };
-
+////////////// Comment components ////////////////////////
+const CommentSection = (props) => {
+    return props.comments.map(comment => {
+        console.log(comment)
+        return (
+        <p>{comment.user} {comment.message}</p>
+    ) })
+}
 
 /////////////// Ticket Timeline Component showing inside the model  /////////////////////////
 const StatusTimeline = ({ Ticket }) => {
