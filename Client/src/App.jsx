@@ -21,6 +21,11 @@ function App() {
   const [isLoading, setisLoading] = useState(true);
   const [hasTickets, sethasTickets] = useState(false);
   const [user, setuser] = useState("");
+  const [isHome, setisHome] = useState(true);
+
+  const changeSideBar = (home) => {
+    setisHome(home);
+  }
   
   const fetchTicket = async () => {
     let ticks = await apiController.fetchAllTickets();
@@ -105,7 +110,7 @@ function App() {
       <div className="flex-grow flex">
       <Router>
         <div className="w-2/12">
-          <Sidebar user={user} />
+          <Sidebar user={user} isHome={isHome} changeSideBar={changeSideBar}/>
         </div>
         <div className="w-10/12 p-4 bg-pink"> 
         <Routes>

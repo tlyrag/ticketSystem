@@ -1,5 +1,46 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
+const homeLinks = ["dashboard","New-ticket"];
+const dashBoardLinks = ["dashboard","accounts-payable","accounts-receivable","sales"];
+const LinkCreator = (props) => {
+    return (
+        <div className="bg-white text-purple flex-grow flex flex-col">
+        {/* User Profile */}
+        <div className="flex flex-col items-center py-5">
+            <img src={props.user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
+            <p className="mt-2 font-semibold">{props.user.name}</p>
+        </div>
+
+        {/* Navigation Menu */}
+        <ul className="flex-grow space-y-4 p-5 overflow-y-auto">
+            <li>
+                <NavLink 
+                    to="/" 
+                    className={`block p-2 rounded ${location.pathname === '/' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
+                    onClick ={ ()=> props.changeSideBar(true)}
+                >
+                    Home
+                </NavLink>
+            </li>
+            {props.links.map(link=> {
+                return (            
+                    <li>
+                        <NavLink 
+                            to={`/${link}`} 
+                            className={`block p-2 rounded ${location.pathname === `/${link.toLowerCase()}` ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
+                            onClick = {() => {
+                                if(link=="dashboard")  {props.changeSideBar(false)}
+                            }}
+                        >
+                            {`${link.charAt(0).toUpperCase() + link.slice(1)}`}
+                        </NavLink>
+                    </li>
+                )
+            })}
+        </ul>
+    </div>
+    )
+};
 const SideBar = (props) => {
     const location = useLocation(); 
 
@@ -16,37 +57,7 @@ const SideBar = (props) => {
             </div>
 
             {/* Second Row: User Profile and Navigation Buttons */}
-            <div className="bg-white text-purple flex-grow flex flex-col">
-                {/* User Profile */}
-                <div className="flex flex-col items-center py-5">
-                    <img src={props.user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
-                    <p className="mt-2 font-semibold">{props.user.name}</p>
-                </div>
-
-                {/* Navigation Menu */}
-                <ul className="flex-grow space-y-4 p-5 overflow-y-auto">
-                    <li>
-                        <NavLink to="/" className={`block p-2 rounded ${location.pathname === '/' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}>
-                            View Tickets
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/new-ticket" className={`block p-2 rounded ${location.pathname === '/new-ticket' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}>
-                            New Ticket
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/dashboard" className={`block p-2 rounded ${location.pathname === '/dashboard' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}>
-                            Dashboard
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/settings" className={`block p-2 rounded ${location.pathname === '/settings' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}>
-                            Settings
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
+            {props.isHome ? <LinkCreator links = {homeLinks} changeSideBar = {props.changeSideBar} user ={props.user}/> :<LinkCreator links={dashBoardLinks} user = {props.user} changeSideBar = {props.changeSideBar}/>}
 
             {/* Third Row: Footer */}
             <div className="bg-purple p-5 flex-none">
