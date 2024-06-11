@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-const homeLinks = ["dashboard","New-ticket"];
-const dashBoardLinks = ["dashboard","accounts-payable","accounts-receivable","sales"];
+const homeLinks = ["dashboard","New-ticket","It-Inventory"];
+const dashBoardLinks = ["dashboard","inventory","accounts-payable","accounts-receivable","sales"];
 const LinkCreator = (props) => {
     return (
         <div className="bg-white text-purple flex-grow flex flex-col">
@@ -27,7 +27,7 @@ const LinkCreator = (props) => {
                     <li>
                         <NavLink 
                             to={`/${link}`} 
-                            className={`block p-2 rounded ${location.pathname === `/${link.toLowerCase()}` ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
+                            className={`block p-2 rounded ${location.pathname.toLocaleLowerCase() === `/${link.toLowerCase()}` ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
                             onClick = {() => {
                                 if(link=="dashboard")  {props.changeSideBar(false)}
                             }}
