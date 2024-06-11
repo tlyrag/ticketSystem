@@ -6,6 +6,7 @@ import MainContent from './Views/Components/MainContent';
 import NewTicket from './Views/Pages/NewTicket';
 import { useState,useEffect } from 'react';
 import apiController from './Controller/apiController';
+import Invetory from './Views/Dashboard/InventoryDash'
 
 /// to be replaced once login is created
 const loggedUser = {
@@ -126,6 +127,8 @@ function App() {
               /> 
             }/>
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
+            <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
+            <Route path="/inventory" element={<Invetory  user={user}/>} />
           </Routes>
         </div>
         </Router>
