@@ -5,6 +5,7 @@ import mongodb from './controller/DatabaseController.js';
 import routes from './routes/routes.js'
 import path from "path"
 import { fileURLToPath } from 'url';
+import sqlServer from './model/SqlServerModel.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,6 +27,7 @@ app.use((req,res,next) => {
 
 const createServer = async () =>{
     await mongodb.connect();
+    // await sqlServer.dbConnect();
     app.listen(port, () => console.log(`========== Server Started At Port ${port} ==========`))
 }
 
