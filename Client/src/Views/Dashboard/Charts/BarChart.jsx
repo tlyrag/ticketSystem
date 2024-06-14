@@ -46,7 +46,7 @@ const data = [
   },
 ];
 
-const InventoryBarChart = () => {
+const ReBarChart = () => {
     return (
       <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -72,7 +72,7 @@ const InventoryBarChart = () => {
       );
 }
 
-export default InventoryBarChart;
+export default ReBarChart;
 
 
 

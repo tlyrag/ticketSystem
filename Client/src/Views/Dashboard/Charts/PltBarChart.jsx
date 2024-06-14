@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 import { DefaultTooltipContent } from 'recharts';
 
 
-const InventPlt = () => {
+const PltBarChart = () => {
     return (
         <Plot
         data={[
@@ -15,4 +15,4 @@ const InventPlt = () => {
     )
 }
 
-export default InventPlt;
+export default PltBarChart;
