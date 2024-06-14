@@ -1,7 +1,6 @@
-// import DataController from "../Controllers/DataController.js"
-// import DBController from "../Controllers/DatabaseController.js"
-// import StaticData from "../Model/StaticData.js"
+
 import DBController from '../controller/DatabaseController.js'
+import SqlController from '../controller/SqlServerController.js';
 
 export default(app) => {
     // Check if server is up and running
@@ -188,6 +187,22 @@ export default(app) => {
         }
     })
 
+    app.get('/getPoLines/:companyId',async (req,res) => {
+        try {
+            const companyId = req.params.companyId
+            let pos = await SqlController.getPoLines(companyId);
+            res.status(200).json({
+                ok:true,
+                poLines:pos
+            })
+        } catch (err) {
+            res.status(500).json({
+                ok:false,
+                message:"Failed to Get Data",
+                error: err.message
+            })
+        }
+    })
 
 }
 

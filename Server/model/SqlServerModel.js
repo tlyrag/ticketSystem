@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import mssql from 'mssql/msnodesqlv8.js'
-
+import SqlQueries from "../Constants/SqlQueries.js";
 
 var dbConfig = {
     server: process.env.SQLSERVERNAME,
@@ -14,32 +14,27 @@ var dbConfig = {
 
 const dbConnect = async () => {
     try {
-        
-        const dbConnection = await new mssql.connect(dbConfig, (err) => {
-            console.log(`${dbConfig.server}`)
-            if(err) {
-                console.log(`Failed to connect to database ${err}`)
-            } else {
-                console.log(`connected to database ${dbConfig.server}`)
-            }
-        })
-
+        const pool = await mssql.connect(dbConfig);
+        return pool;
     }
     catch(err) {
         console.log(`Connection Errror ${err}`)
     }
 }
 
-const  getOrder = async  (productId) => {
+const  getPurchaseOrders = async  (companyId) => {
     try {
-      let  pool = await  sql.connect(config);
-      let  product = await  pool.request()
-      .input('input_parameter', sql.Int, productId)
-      .query("SELECT * from Orders where Id = @input_parameter");
-      return  product.recordsets;
+        let pool = await dbConnect();
+        let request = await pool.request()
+        request.input('companyId',mssql.VarChar,companyId)
+        let pos = await request.query(SqlQueries.arInvoiceByCust())  
+    
+        return  pos.recordsets;
     }
     catch (error) {
       console.log(error);
+    } finally {
+        mssql.close();
     }
   }
 
@@ -47,7 +42,8 @@ const  getOrder = async  (productId) => {
   
 const sqlServer = {
     dbConfig,
-    dbConnect
+    dbConnect,
+    getPurchaseOrders
 }
 export default sqlServer
 
