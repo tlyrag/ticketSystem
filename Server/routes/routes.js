@@ -1,6 +1,7 @@
 
 import DBController from '../controller/DatabaseController.js'
 import SqlController from '../controller/SqlServerController.js';
+import QuantumServerController from '../controller/QuantumServer.Controller.js';
 
 export default(app) => {
     // Check if server is up and running
@@ -194,6 +195,26 @@ export default(app) => {
             res.status(200).json({
                 ok:true,
                 poLines:pos
+            })
+        } catch (err) {
+            res.status(500).json({
+                ok:false,
+                message:"Failed to Get Data",
+                error: err.message
+            })
+        }
+    })
+
+    app.get('/getInventory/:companyId',async (req,res) => {
+        try {
+            console.log("GOT HERE")
+            const companyId = req.params.companyId
+            console.log(companyId)
+            let result = await QuantumServerController.runInventory(companyId);
+            console.log(result)
+            res.status(200).json({
+                ok:true,
+                InvResult:result
             })
         } catch (err) {
             res.status(500).json({
