@@ -127,7 +127,6 @@ function App() {
               /> 
             }/>
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
-            <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
             <Route path="/inventory" element={<Invetory  user={user}/>} />
           </Routes>
         </div>

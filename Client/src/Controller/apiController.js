@@ -9,6 +9,7 @@ const fetchAllTickets = () => {
         console.log(`Failed to fetch Ticket Data ${err}`)
     })
 }
+
 const getTicketById = (id) => {
   
     return fetch(apiModel.getTicketById(id))
@@ -72,7 +73,13 @@ const addComments = (id,comment) => {
     return fetch (apiModel.addComment(id),requestOptions)
     .catch(err=> console.log(`Failed to addComments ${err}`))
 }
-
+const getInventory =(company) => {
+    return fetch(apiModel.getInventory(company))
+    .then(response => response.json())
+    .then(data=>{return data})
+    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    
+}
 
 
 export default {
@@ -82,5 +89,6 @@ export default {
     cancelTicket,
     assignToMeTicket,
     addComments,
-    getTicketById
+    getTicketById,
+    getInventory
 }
