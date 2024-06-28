@@ -38,12 +38,33 @@ const  getPurchaseOrders = async  (companyId) => {
     }
   }
 
+  const getInventory = async (companyId) => {
+    try {
+        let pool = await dbConnect();
+        let request = await pool.request()
+        request.input('companyId',mssql.VarChar,companyId)
+        let inv = await request.query(SqlQueries.custInventory())
+        .catch( err => {
+            console.log(`SlQSeverModel Error : Failed to run inventory Query ${err}`)
+            return `SlQSeverModel Error : Failed to run inventory Query ${err}`
+        })  
+        return  inv.recordsets[0];
+    }
+    catch (error) {
+      console.log(error);
+    } finally {
+        mssql.close();
+    }
+ 
+  }
+
 
   
 const sqlServer = {
     dbConfig,
     dbConnect,
-    getPurchaseOrders
+    getPurchaseOrders,
+    getInventory
 }
 export default sqlServer
 

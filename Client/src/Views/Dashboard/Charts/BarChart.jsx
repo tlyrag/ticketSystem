@@ -46,13 +46,13 @@ const data = [
   },
 ];
 
-const ReBarChart = () => {
+const ReBarChart = (props) => {
     return (
       <ResponsiveContainer width="100%" height="100%">
       <BarChart
         width={500}
         height={300}
-        data={data}
+        data={props.custData}
         margin={{
           top: 5,
           right: 30,
@@ -61,12 +61,12 @@ const ReBarChart = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey={props.custData.PO_ID} />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="pv" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
-        <Bar dataKey="uv" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+        <Bar dataKey={props.custData.EXTENDED_SELL} fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
+        <Bar dataKey={props.custData.EXTENDED_SELL} fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
       </BarChart>
     </ResponsiveContainer>
       );

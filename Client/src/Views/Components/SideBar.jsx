@@ -1,10 +1,10 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-const homeLinks = ["dashboard","New-ticket","It-Inventory"];
+const homeLinks = ["dashboard"]; //,"New-ticket","It-Inventory"
 const dashBoardLinks = ["dashboard","inventory","accounts-payable","accounts-receivable","sales"];
 const LinkCreator = (props) => {
     return (
-        <div className="bg-white text-purple flex-grow flex flex-col">
+        <div className="bg-white text-purple flex-grow flex flex-col transition duration-150 ease-in-out">
         {/* User Profile */}
         <div className="flex flex-col items-center py-5">
             <img src={props.user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
@@ -51,7 +51,7 @@ const SideBar = (props) => {
         <div className="bg-purple text-white h-full border-purple-500 border-r-4 flex flex-col">
             {/* First Row: Header */}
             <div className="bg-purple p-5 flex-none">
-                <h2 className="text-lg font-bold">Ticket System</h2>
+                <h2 className="text-lg font-bold">Westkey Reports</h2>
                 {/* Placeholder for logo image */}
                 {/* <img src="/path-to-your-logo.png" alt="Logo" className="w-24 h-24 mt-3 mb-5" /> */}
             </div>
@@ -61,7 +61,7 @@ const SideBar = (props) => {
 
             {/* Third Row: Footer */}
             <div className="bg-purple p-5 flex-none">
-                <p className="text-center text-sm">© 2024 Ticket System</p>
+                <p className="text-center text-sm">© 2024 Westkey Reports</p>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 import { DefaultTooltipContent } from 'recharts';
 
 
-const PltBarChart = () => {
+const PltBarChart = (props) => {
     return (
         <Plot
         data={[
