@@ -27,7 +27,7 @@ const addTicket =(ticket) => {
         body: JSON.stringify(ticket)
     };
     return fetch(apiModel.addTicket(), requestOptions)
-    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    .catch(err=> console.log(`Failed to add ticket ${err}`))
     
 }
 const completeTicket =(id) => {
@@ -39,7 +39,7 @@ const completeTicket =(id) => {
     };
     console.log(apiModel.completeTicket(id))
     return fetch(apiModel.completeTicket(id), requestOptions)
-    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    .catch(err=> console.log(`Failed to complete ticket ${err}`))
     
 }
 const cancelTicket =(id) => {
@@ -73,14 +73,22 @@ const addComments = (id,comment) => {
     return fetch (apiModel.addComment(id),requestOptions)
     .catch(err=> console.log(`Failed to addComments ${err}`))
 }
-const getInventory =(company) => {
-    return fetch(apiModel.getInventory(company))
+const getInventory =(company,system) => {
+    return fetch(apiModel.getInventory(company,system))
     .then(response => response.json())
     .then(data=>{return data})
-    .catch(err=> console.log(`Failed to add to cart ${err}`))
+    .catch(err=> console.log(`Failed to fetch inventory from ${system}: ${err}`))
     
 }
-
+const getMonarchInventory =(company) => {
+    return fetch(apiModel.getMonarchInventory(company))
+    .then(response => response.json())
+    .then(data=>{
+        return data
+    })
+    .catch(err=> console.log(`Failed to fetch inventory from Monarch: ${err}`))
+    
+}
 
 export default {
     fetchAllTickets,
@@ -90,5 +98,6 @@ export default {
     assignToMeTicket,
     addComments,
     getTicketById,
-    getInventory
+    getInventory,
+    getMonarchInventory
 }

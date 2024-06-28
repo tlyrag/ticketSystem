@@ -27,7 +27,7 @@ app.use((req,res,next) => {
 
 const createServer = async () =>{
     await mongodb.connect();
-    // await sqlServer.dbConnect();
+    //await sqlServer.dbConnect();
     app.listen(port, () => console.log(`========== Server Started At Port ${port} ==========`))
 }
 

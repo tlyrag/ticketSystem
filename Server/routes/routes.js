@@ -204,26 +204,48 @@ export default(app) => {
             })
         }
     })
-
-    app.get('/getInventory/:companyId',async (req,res) => {
+    app.get('/getPSinventory/:companyId',async (req,res) => {
         try {
-            console.log("GOT HERE")
             const companyId = req.params.companyId
-            console.log(companyId)
-            let result = await QuantumServerController.runInventory(companyId);
-            console.log(result)
-            res.status(200).json({
+            let inventory = await SqlController.getCustInventory(companyId)
+            return res.status(200).json({
                 ok:true,
-                InvResult:result
+                InvResult:inventory
             })
         } catch (err) {
-            res.status(500).json({
+        return  res.status(500).json({
                 ok:false,
                 message:"Failed to Get Data",
                 error: err.message
             })
         }
     })
+
+    app.get('/getInventory/:companyId', async (req, res) => {
+        try {
+            const companyId = req.params.companyId;
+            const system = req.query.system;
+    
+            console.log(`Company ID: ${companyId}, System: ${system}`);
+    
+            let inventory = await QuantumServerController.runInventory(companyId, system);
+    
+            //console.log(result);
+            res.status(200).json({
+                ok: true,
+                InvResult: inventory
+            });
+        } catch (err) {
+            console.error("Error fetching inventory:", err);
+            res.status(500).json({
+                ok: false,
+                message: "Failed to Get Data",
+                error: err.message
+            });
+        }
+    });
+
+    
 
 }
 

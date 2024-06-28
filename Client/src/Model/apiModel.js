@@ -27,10 +27,12 @@ const addComment = (id) => {
 const getTicketById = (id) => {
     return  `${getApiUrl()}/ticket/${id}`
 }
-const getInventory = (id) => {
-    return  `${getApiUrl()}/getInventory/${id}`
+const getInventory = (companyID, system) => {
+    return `${getApiUrl()}/getInventory/${companyID}?system=${system}`;
 }
-
+const getMonarchInventory = (companyID) => {
+    return `${getApiUrl()}/getPSinventory/${companyID}`;
+}
 export default {
     getApiUrl,
     tickets,
@@ -40,6 +42,7 @@ export default {
     assignToMeTicket,
     addComment,
     getTicketById,
-    getInventory
+    getInventory,
+    getMonarchInventory
 
 }
