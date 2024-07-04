@@ -1,7 +1,8 @@
 
 import DBController from '../controller/DatabaseController.js'
 import SqlController from '../controller/SqlServerController.js';
-import QuantumServerController from '../controller/QuantumServer.Controller.js';
+import PythonServerController from '../controller/PythonServerController.js';
+import ExcelController from '../controller/ExcelController.js';
 
 export default(app) => {
     // Check if server is up and running
@@ -14,22 +15,6 @@ export default(app) => {
         });
     });
 
-    // app.get('/products/categories',async (req,res) => {
-    
-    //     try {
-    //         const productsFromDb = await DBController.getAllProducts();
-            
-    //         const categoryList = await DataController.getCategoryLists(productsFromDb);
-    //         res.json(categoryList)
-    //     }
-    //     catch(error) {
-    //         res.json({
-    //             ok:false,
-    //             error:error
-    //         })
-    //     }
-
-    // })
 
     app.get('/tickets',async (req,res) => {
         
@@ -57,7 +42,7 @@ export default(app) => {
                     ticket: ticket
                 });
             } else {
-                // If no ticket is found, return a 404 Not Found response
+
                 res.status(404).json({
                     ok: false,
                     message: `No ticket found with ID ${id}`
@@ -66,7 +51,6 @@ export default(app) => {
         } catch(error) {
             console.error("Error retrieving ticket:", error);
 
-            // Return a 500 Internal Server Error response if an exception occurs
             res.status(500).json({
                 ok: false,
                 message: "Failed to retrieve ticket due to an internal error"
@@ -74,19 +58,7 @@ export default(app) => {
         }
     })
 
-    // app.get('/products/category/:category',async (req,res)=> {
-    //     const category = req.params.category;
-    //     try {
-    //         const productsFromDb = await DBController.getAllProducts();
-    //         const productList = await DataController.getProductByCategory(category,productsFromDb);
-    //         res.json(productList)
-    //     } catch(error) {
-    //         res.json({
-    //             ok:false,
-    //             error:error
-    //         })
-    //     }
-    // })
+
 
     app.post('/addTicket',async (req,res) => {
        
@@ -210,7 +182,9 @@ export default(app) => {
             let inventory = await SqlController.getCustInventory(companyId)
             return res.status(200).json({
                 ok:true,
-                InvResult:inventory
+                InvResult:inventory,
+                system: "PS",
+                query:"inventory"
             })
         } catch (err) {
         return  res.status(500).json({
@@ -225,15 +199,15 @@ export default(app) => {
         try {
             const companyId = req.params.companyId;
             const system = req.query.system;
-    
-            console.log(`Company ID: ${companyId}, System: ${system}`);
-    
-            let inventory = await QuantumServerController.runInventory(companyId, system);
+
+            let inventory = await PythonServerController.runInventory(companyId, system);
     
             //console.log(result);
             res.status(200).json({
                 ok: true,
-                InvResult: inventory
+                InvResult: inventory,
+                system: system,
+                query:"inventory"
             });
         } catch (err) {
             console.error("Error fetching inventory:", err);
@@ -245,6 +219,20 @@ export default(app) => {
         }
     });
 
+    app.post('/generateExcelFile',async(req,res) => {
+        const system = req.body.system
+        const data = req.body.data
+        const company = req.body.company
+        const query = req.body.query
+        const template = query+system
+
+        let outputPath = await ExcelController.generateExcelFile(template,data,company)
+
+        res.status(200).json({
+            ok: true,
+            outputPath:outputPath
+        });
+    })
     
 
 }
