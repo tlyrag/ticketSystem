@@ -1,4 +1,4 @@
-import quantumModel from '../model/QuantumServerModel.js'
+import pythonModel from '../model/PythonServerModel.js'
 const runInventory =(company,system) => {
     const requestOptions = {
         method: 'POST',
@@ -9,7 +9,7 @@ const runInventory =(company,system) => {
             params: [company]
         })
     };
-    return fetch(quantumModel.runQuery(),requestOptions).then(response=>response.json())
+    return fetch(pythonModel.runQuery(),requestOptions).then(response=>response.json())
     .then(data=> {
         return data
     })
@@ -18,7 +18,7 @@ const runInventory =(company,system) => {
 }
 
 const test = () => {
-    return fetch(quantumModel.testServer())
+    return fetch(pythonModel.testServer())
     .then(response=>response.json())
     .then(data=> {
         return data

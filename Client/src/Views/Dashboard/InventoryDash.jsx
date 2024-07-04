@@ -63,6 +63,9 @@ const Inventory = () => {
     const [custData, setcustData] = useState([]);
     const [hasData, sethasData] = useState(false);
     const [isFetching, setisFetching] = useState(false);
+    const [fetchedSystem, setfetchedSystem] = useState();
+    const [fetchedCompany, setfetchedCompany] = useState();
+    
 
     const getData = async (custId,system) => {
         try {
@@ -71,11 +74,13 @@ const Inventory = () => {
             if(system === 'qm1' || system === 'qm2') {
                 custInv = await apiController.getInventory(custId,system);
                 setcustData(custInv.InvResult);
-                sethasData(true)
+                setfetchedSystem('qm1');
+                sethasData(true);
             } else if(system==='monarch') {
                 custInv = await apiController.getMonarchInventory(custId);
                 setcustData(custInv.InvResult);
-                sethasData(true)
+                setfetchedSystem('monarch');
+                sethasData(true);
             } else if (system ==='all') {
                 const inventorySources = [
                     () => apiController.getMonarchInventory(custId),
@@ -89,6 +94,7 @@ const Inventory = () => {
                     if (result && result.InvResult.length > 0) {
                         setcustData(result.InvResult);
                         sethasData(true);
+                        setfetchedSystem(result.system);
                         setisFetching(false)
                         return;  
                     } 
@@ -108,7 +114,16 @@ const Inventory = () => {
     return (
         <div className="h-full bg-white drop-shadow-3xl m">
             <Filters getData={getData} />
-             { hasData ? <DataTable custData={custData} /> : <>No Data</>}
+             { 
+             hasData ? 
+                <>
+                <DataTable custData={custData} /> 
+                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                    Generate Excel
+                </button>
+                </>
+            : <>No Data</>}
+
             <div className="grid grid-cols-2 gap-4 mt-5">
                 {hasData ? <BarChart custData={custData}/> : <>No Data</>}
                 {hasData ? <PltBarChart custData={custData}/> :<>No Data</>}
