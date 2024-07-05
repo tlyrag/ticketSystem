@@ -66,11 +66,30 @@ const Inventory = () => {
     const [fetchedSystem, setfetchedSystem] = useState();
     const [fetchedCompany, setfetchedCompany] = useState();
     
+    const generateExcel= async() => {
+
+        let excelInfo = {
+            custData:custData,
+            system:fetchedSystem,
+            company:fetchedCompany,
+            query:"inventory"
+        }
+      await apiController.generateExcelFile(excelInfo)
+
+    }
+
+    /**
+     * Fetches data from Web server and returns the customer information based on the Inventory Query
+     * @param {*} custId  Customer ID inside Monarc or Quantum, input comes from the user textBox in the filter
+     * @param {*} system  System to query the information, comes from the selection in the dropdown in the filter
+     * @returns 
+     */
 
     const getData = async (custId,system) => {
         try {
             setisFetching(true)
             let custInv = null
+            setfetchedCompany(custId);
             if(system === 'qm1' || system === 'qm2') {
                 custInv = await apiController.getInventory(custId,system);
                 setcustData(custInv.InvResult);
@@ -94,6 +113,7 @@ const Inventory = () => {
                     if (result && result.InvResult.length > 0) {
                         setcustData(result.InvResult);
                         sethasData(true);
+                        console.log(result.system)
                         setfetchedSystem(result.system);
                         setisFetching(false)
                         return;  
@@ -118,7 +138,7 @@ const Inventory = () => {
              hasData ? 
                 <>
                 <DataTable custData={custData} /> 
-                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => generateExcel()}>
                     Generate Excel
                 </button>
                 </>

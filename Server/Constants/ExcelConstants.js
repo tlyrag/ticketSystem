@@ -1,7 +1,7 @@
 const templateFilePath = {
-    inventoryqm1: "E:\\Documents\\__Knowledge Tips\\DashBoard And tables\\Report\\Inventory Checklist\\Working\\InventoryQMTemplate.xlsx",
-    inventoryqm2: "E:\\Documents\\__Knowledge Tips\\DashBoard And tables\\Report\\Inventory Checklist\\Working\\InventoryQMTemplate.xlsx",
-    inventoryps: `E:\\Documents\\__Knowledge Tips\\DashBoard And tables\\Report\\Inventory Checklist\\Working\\InventoryPSTemplate.xlsx`
+    inventoryqm1: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
+    inventoryqm2: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
+    inventoryPS: "P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx"
 }
 const templatePath = (query) => {
     return templateFilePath[query]
@@ -9,7 +9,7 @@ const templatePath = (query) => {
 
 const outputPath = (filename) => {
 
-    return `E:\\Documents\\__Knowledge Tips\\DashBoard And tables\\Output\\${filename}.xlsx`
+    return `P:\\Reports\\testing\\Outputs\\${filename}.xlsx`
 }
 export default {
      templatePath,
