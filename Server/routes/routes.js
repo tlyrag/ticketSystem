@@ -3,6 +3,7 @@ import DBController from '../controller/DatabaseController.js'
 import SqlController from '../controller/SqlServerController.js';
 import PythonServerController from '../controller/PythonServerController.js';
 import ExcelController from '../controller/ExcelController.js';
+import ExcelConstants from '../Constants/ExcelConstants.js';
 
 export default(app) => {
     // Check if server is up and running
@@ -221,16 +222,26 @@ export default(app) => {
 
     app.post('/generateExcelFile',async(req,res) => {
         const system = req.body.system
-        const data = req.body.data
+        const custData = req.body.custData
         const company = req.body.company
         const query = req.body.query
         const template = query+system
 
-        let outputPath = await ExcelController.generateExcelFile(template,data,company)
+        let date = new Date()
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const day = date.getDate().toString().padStart(2, '0');
+        const hour = date.getHours().toString().padStart(2, '0');
+        const minute = date.getMinutes().toString().padStart(2, '0');
+        let today = `${year}_${month}_${day}_${hour}_${minute}`;
 
+        let inputPath = ExcelConstants.templatePath(template)
+        let outputPath = ExcelConstants.outputPath(`${company}_${query}_${today}`)
+        let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
         res.status(200).json({
             ok: true,
-            outputPath:outputPath
+            outputPath:outputPath,
+            response:response
         });
     })
     

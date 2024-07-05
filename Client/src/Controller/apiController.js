@@ -89,7 +89,16 @@ const getMonarchInventory =(company) => {
     .catch(err=> console.log(`Failed to fetch inventory from Monarch: ${err}`))
     
 }
-
+const generateExcelFile =(excelInfo) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(excelInfo)
+    };
+    return fetch(apiModel.generateExcel(), requestOptions)
+    .catch(err=> console.log(`Failed to generateExcel ${err}`))
+    
+}
 export default {
     fetchAllTickets,
     addTicket,
@@ -99,5 +108,6 @@ export default {
     addComments,
     getTicketById,
     getInventory,
-    getMonarchInventory
+    getMonarchInventory,
+    generateExcelFile
 }

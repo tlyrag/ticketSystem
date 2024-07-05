@@ -7,6 +7,10 @@ const getApiUrl = () => {
 const runQuery = () =>{
     return `${getApiUrl()}/run_query`
 } 
+
+const generateExcel = () =>{
+    return `${getApiUrl()}/saveExcel`
+} 
 const testServer = () =>{
     return `${getApiUrl()}/test`
 } 
@@ -15,5 +19,6 @@ const testServer = () =>{
 export default {
     getApiUrl,
     runQuery,
-    testServer
+    testServer,
+    generateExcel
 }
