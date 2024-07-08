@@ -22,6 +22,11 @@ const custInventory = () => {
     J.po_number,
     j.mailing_qty,
     j.quantity_ordered,
+        CASE PAP.[ACTIVITY CODE]
+    	WHEN '9000003' THEN 'D'
+    	WHEN '9000001' THEN 'C'
+    	ELSE ' ' 
+    END AS OWNER,
     PAP.[QTY ON HAND],
     PAP.[COMMIT ON ORDER],
     PAP.[UNIT OF ISSUE] AS 'UOD QUANTITY',
@@ -56,7 +61,9 @@ GROUP BY
     PAP.[UNIT OF ISSUE],
     PAP.[UNIT ISSUE DESC],
     PAP.[REVISE DATE],
-    PAP.[SELL PRICE]
+    PAP.[SELL PRICE],
+        PAP.[ACTIVITY CODE]
+
 `
 }
 

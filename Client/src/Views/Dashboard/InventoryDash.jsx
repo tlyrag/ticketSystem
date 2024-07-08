@@ -3,61 +3,8 @@ import PltBarChart from "./Charts/PltBarChart"
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
-
-const Filters = ({ getData }) => {
-    const [company, setCompany] = useState('');
-    const [selectedSystem, setselectedSystem] = useState('');
-
-    const dropdownOptions = [
-        {value:'',label:"Select System"},
-        { value: 'all', label: 'Search All' },
-        { value: 'monarch', label: 'Monarch/PrintStream' },
-        { value: 'qm1', label: 'Quantum 1' },
-        { value: 'qm2', label: 'Quantum 2' }
-    ];
-    const handleSearchChange = (e) => {
-        setCompany(e.target.value);
-        
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            getData(company,selectedSystem);
-        }
-    };
-    const handleSystemChange = (e) => {
-        setselectedSystem(e.target.value);
-    };
-
-    return (
-        <div className="p-4 bg-purple">
-            <div className="flex gap-4">
-                <input
-                    type="text"
-                    placeholder="Search for Customer"
-                    className="flex-1 p-2 border rounded"
-                    value={company}
-                    onChange={handleSearchChange}
-                    onKeyDown={handleKeyDown}
-                />
-                <select
-                    className="border rounded p-2"
-                    value={selectedSystem}
-                    onChange={handleSystemChange}
-                >
-                    {dropdownOptions.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => getData(company,selectedSystem)}>
-                    Search
-                </button>
-            </div>
-        </div>
-    );
-};
+import SummaryCard from './DashComponents/Cards';
+import Filters from "./DashComponents/Filters";
 
 const Inventory = () => {
     const [custData, setcustData] = useState([]);
@@ -65,6 +12,8 @@ const Inventory = () => {
     const [isFetching, setisFetching] = useState(false);
     const [fetchedSystem, setfetchedSystem] = useState();
     const [fetchedCompany, setfetchedCompany] = useState();
+    const [totalSell, settotalSell] = useState();
+    const [totalQtd, settotalQtd] = useState();
     
     const generateExcel= async() => {
 
@@ -94,11 +43,13 @@ const Inventory = () => {
                 custInv = await apiController.getInventory(custId,system);
                 setcustData(custInv.InvResult);
                 setfetchedSystem('qm1');
+                calculateTotalQuantity(custInv.InvResult);
                 sethasData(true);
             } else if(system==='monarch') {
                 custInv = await apiController.getMonarchInventory(custId);
                 setcustData(custInv.InvResult);
                 setfetchedSystem('monarch');
+                calculateTotalQuantity(custInv.InvResult);
                 sethasData(true);
             } else if (system ==='all') {
                 const inventorySources = [
@@ -113,9 +64,9 @@ const Inventory = () => {
                     if (result && result.InvResult.length > 0) {
                         setcustData(result.InvResult);
                         sethasData(true);
-                        console.log(result.system)
                         setfetchedSystem(result.system);
                         setisFetching(false)
+                        calculateTotalQuantity(result.InvResult);
                         return;  
                     } 
                 }
@@ -131,22 +82,57 @@ const Inventory = () => {
         }
     };
 
+    const calculateTotalQuantity =async(custData) => {
+        let totalExtendedSell =0;
+        let totalQtdOnHand = 0;
+        custData.forEach(data => {
+            totalExtendedSell += data.EXTENDED_SELL;
+            //From Quantum
+            if(data.QTY_ON_HAND) {
+                totalQtdOnHand += data.QTY_ON_HAND
+            } 
+            //From Monarch
+            else {
+                totalQtdOnHand += data["UOD QUANTITY"] 
+            }
+            settotalSell( `$ ${(Math.round(totalExtendedSell * 100) / 100).toFixed(2)}`);
+            settotalQtd(totalQtdOnHand);
+        });
+    
+    }
+
     return (
+        
         <div className="h-full bg-white drop-shadow-3xl m">
             <Filters getData={getData} />
+
+            <div className="flex flex-col items-center w-full p-4">
+                {
+                    hasData ? 
+                         <div className="flex flex-wrap justify-around w-full max-w-4xl">
+                            <SummaryCard title="Total Quantity On Hand" value={totalQtd} />
+                            <SummaryCard title="Total Extended Sell" value={totalSell} /> 
+                        </div>
+                    :
+                    <>No Data</>
+                }
+
+        </div>
              { 
              hasData ? 
                 <>
-                <DataTable custData={custData} /> 
-                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => generateExcel()}>
-                    Generate Excel
-                </button>
+                    <DataTable custData={custData} /> 
+                    <div className="flex items-center justify-center h-16">
+                        <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => generateExcel()}>
+                            Generate Excel
+                        </button>
+                    </div>
                 </>
             : <>No Data</>}
 
             <div className="grid grid-cols-2 gap-4 mt-5">
-                {hasData ? <BarChart custData={custData}/> : <>No Data</>}
-                {hasData ? <PltBarChart custData={custData}/> :<>No Data</>}
+                {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
+                {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
             </div>
         </div>
     );
