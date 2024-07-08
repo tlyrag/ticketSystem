@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
 const homeLinks = ["dashboard"]; //,"New-ticket","It-Inventory"
-const dashBoardLinks = ["dashboard","inventory","accounts-payable","accounts-receivable","sales"];
+const dashBoardLinks = ["dashboard","inventory","sales"];
 const LinkCreator = (props) => {
     return (
         <div className="bg-white text-purple flex-grow flex flex-col transition duration-150 ease-in-out">
