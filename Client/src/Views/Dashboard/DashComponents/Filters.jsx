@@ -1,5 +1,5 @@
 import React, { useDebugValue, useEffect, useState } from 'react';
-const Filters = ({ getData }) => {
+const Filters = ({ getData,isFetching }) => {
     const [company, setCompany] = useState('');
     const [selectedSystem, setselectedSystem] = useState('');
 
@@ -46,7 +46,7 @@ const Filters = ({ getData }) => {
                         </option>
                     ))}
                 </select>
-                <button className="bg-purple hover:bg-white hover:text-purple text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => getData(company,selectedSystem)}>
+                <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => getData(company,selectedSystem)}>
                     Search
                 </button>
             </div>
