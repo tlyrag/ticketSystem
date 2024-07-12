@@ -40,6 +40,7 @@ const  getPurchaseOrders = async  (companyId) => {
 
   const getInventory = async (companyId) => {
     try {
+        console.log('Running Query')
         let pool = await dbConnect();
         let request = await pool.request()
         request.input('companyId',mssql.VarChar,companyId)
