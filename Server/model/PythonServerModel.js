@@ -1,6 +1,6 @@
 const getApiUrl = () => {
-    //return process.env.REACT_APP_API_URL || "http://localhost:5847"
-    return "http://localhost:5000"
+    return process.env.PYTHONAPI || "http://localhost:5000"
+    return 
  
 }
 
@@ -11,6 +11,9 @@ const runQuery = () =>{
 const generateExcel = () =>{
     return `${getApiUrl()}/saveExcel`
 } 
+const reorderNotice =() => {
+    return `${getApiUrl()}/reorderpdf`
+}
 const testServer = () =>{
     return `${getApiUrl()}/test`
 } 
@@ -20,5 +23,6 @@ export default {
     getApiUrl,
     runQuery,
     testServer,
-    generateExcel
+    generateExcel,
+    reorderNotice
 }

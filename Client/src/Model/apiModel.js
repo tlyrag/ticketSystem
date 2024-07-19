@@ -33,9 +33,11 @@ const getInventory = (companyID, system) => {
 const getMonarchInventory = (companyID) => {
     return `${getApiUrl()}/getPSinventory/${companyID}`;
 }
-
 const generateExcel =() =>{
     return `${getApiUrl()}/generateExcelFile`;
+}
+const reorderNotice = () => {
+    return `${getApiUrl()}/reordernotice` 
 }
 export default {
     getApiUrl,
@@ -48,6 +50,7 @@ export default {
     getTicketById,
     getInventory,
     getMonarchInventory,
-    generateExcel
+    generateExcel,
+    reorderNotice
 
 }

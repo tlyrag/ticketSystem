@@ -9,7 +9,7 @@ const templatePath = (query) => {
 
 const outputPath = (filename) => {
 
-    return `P:\\Reports\\testing\\Outputs\\${filename}.xlsx`
+    return `P:\\Reports\\testing\\Outputs\\Inventory\\${filename}.xlsx`
 }
 export default {
      templatePath,

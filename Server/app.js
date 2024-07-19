@@ -14,7 +14,7 @@ const port =  5847;
 app.use(cors())
 app.use(bodyParser.urlencoded({ limit:'50mb', extended: false, parameterLimit: 50000}));
 app.use(bodyParser.json({limit: '50mb'}));
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist',)));
 
 
 app.use((req,res,next) => {
@@ -30,6 +30,7 @@ const createServer = async () =>{
     //await sqlServer.dbConnect();
     app.listen(port, () => console.log(`========== Server Started At Port ${port} ==========`))
 }
+
 
 
     

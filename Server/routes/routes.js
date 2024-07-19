@@ -5,8 +5,12 @@ import PythonServerController from '../controller/PythonServerController.js';
 import ExcelController from '../controller/ExcelController.js';
 import ExcelConstants from '../Constants/ExcelConstants.js';
 
+
+
 export default(app) => {
     // Check if server is up and running
+
+
     app.get('/api/v1/health-check',(req,res) => {
 
         res.json({
@@ -245,6 +249,21 @@ export default(app) => {
         });
     })
     
+    app.post('/reorderNotice',async(req,res)=> {
+        console.log("Running Reorder")
+        const startDate = req.body.startDate
+        const endDate = req.body.endDate
+        const system = req.body.system
+        const params = [startDate,endDate]
+        console.log(startDate)
+        console.log(endDate)
+        let response = await PythonServerController.reorderNotice(params)
+
+        res.status(200).json({
+            ok:true,
+            response:response
+        })
+    })
 
 }
 
