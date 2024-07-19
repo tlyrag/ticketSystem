@@ -1,3 +1,4 @@
+import { response } from 'express';
 import pythonModel from '../model/PythonServerModel.js'
 const runInventory =(company,system) => {
     const requestOptions = {
@@ -48,8 +49,30 @@ const test = () => {
     })
 }
 
+const reorderNotice = (params)=> {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+
+        body:JSON.stringify( {
+                "query_name":"reorder_notice",
+                "params":params
+        })
+    }
+    return fetch(pythonModel.reorderNotice(),requestOptions)
+    .then(response=> response.json())
+    .then(data=> {
+        return data
+    }).catch(err=>{
+        console.log(`failed to fetch data ${err}`)
+    })
+
+}
+
 export default {
     runInventory,
     test,
-    generateExcel
+    generateExcel,
+    reorderNotice
 }
