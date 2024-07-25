@@ -49,7 +49,7 @@ const test = () => {
     })
 }
 
-const reorderNotice = (params)=> {
+const reorderNotice = (params,system)=> {
 
     const requestOptions = {
         method: 'POST',
@@ -57,7 +57,8 @@ const reorderNotice = (params)=> {
 
         body:JSON.stringify( {
                 "query_name":"reorder_notice",
-                "params":params
+                "params":params,
+                "system":system
         })
     }
     return fetch(pythonModel.reorderNotice(),requestOptions)

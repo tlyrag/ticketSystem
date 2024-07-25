@@ -257,7 +257,7 @@ export default(app) => {
         const params = [startDate,endDate]
         console.log(startDate)
         console.log(endDate)
-        let response = await PythonServerController.reorderNotice(params)
+        let response = await PythonServerController.reorderNotice(params,system)
 
         res.status(200).json({
             ok:true,
