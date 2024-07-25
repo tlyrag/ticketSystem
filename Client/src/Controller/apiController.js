@@ -105,7 +105,6 @@ const reorderNotice = (startDate,endDate,system) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(startDate,endDate,system)
     };
-    console.log(requestOptions.body)
     return fetch(apiModel.reorderNotice(), requestOptions)
     .then(response =>response.json())
     .then(data => {return data})
