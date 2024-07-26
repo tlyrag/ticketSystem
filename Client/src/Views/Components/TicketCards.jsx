@@ -51,11 +51,11 @@ const TicketCards =(props) => {
 }
 
 
-const TicketCard = ({key,ticket,handleRowClick}) => {
+const TicketCard = ({ticket,handleRowClick}) => {
 
 
     return (
-        <tr key={key} className={`border-b border-gray-200 hover:bg-gray-100 cursor-pointer ${statusColors[ticket.status]}`} onClick={() => handleRowClick(ticket)}>
+        <tr key={ticket.title} className={`border-b border-gray-200 hover:bg-gray-100 cursor-pointer ${statusColors[ticket.status]}`} onClick={() => handleRowClick(ticket)}>
             <td className="py-3 px-6 text-left whitespace-nowrap">{ticket.createdby}</td>
             <td className="py-3 px-6 text-left whitespace-nowrap">{ticket.title}</td>
             <td className="py-3 px-6 text-left">{ticket.type}</td>

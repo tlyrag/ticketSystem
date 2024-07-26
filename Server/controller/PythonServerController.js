@@ -50,7 +50,7 @@ const test = () => {
 }
 
 const reorderNotice = (params,system)=> {
-
+    console.log(params)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -61,6 +61,7 @@ const reorderNotice = (params,system)=> {
                 "system":system
         })
     }
+    console.log(requestOptions)
     return fetch(pythonModel.reorderNotice(),requestOptions)
     .then(response=> response.json())
     .then(data=> {
@@ -71,9 +72,29 @@ const reorderNotice = (params,system)=> {
 
 }
 
+const runQuery =(query,params,system) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify( {
+            query_name: query,
+            system:system,
+            params: params
+        })
+    };
+
+    return fetch(pythonModel.runQuery(),requestOptions).then(response=>response.json())
+    .then(data=> {
+        return data
+    })
+    .catch(err=> console.log(`Failed to run query ${err}`))
+    
+}
+
 export default {
     runInventory,
     test,
     generateExcel,
-    reorderNotice
+    reorderNotice,
+    runQuery
 }

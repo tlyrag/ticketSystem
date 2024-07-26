@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-const homeLinks = ["dashboard"]; //,"New-ticket","It-Inventory"
-const dashBoardLinks = ["dashboard","inventory","sales"];
+const homeLinks = ["inventory","sales"]; //,"New-ticket","It-Inventory"
+const dashBoardLinks = ["inventory","sales"];
 const LinkCreator = (props) => {
     return (
         <div className="bg-white text-purple flex-grow flex flex-col transition duration-150 ease-in-out">
@@ -12,25 +12,27 @@ const LinkCreator = (props) => {
         </div>
 
         {/* Navigation Menu */}
-        <ul className="flex-grow space-y-4 p-5 overflow-y-auto">
-            <li>
+        <ul className="flex-grow space-y-4 p-5 overflow-y-auto" >
+            <li key='home'>
                 <NavLink 
                     to="/" 
                     className={`block p-2 rounded ${location.pathname === '/' ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
                     onClick ={ ()=> props.changeSideBar(true)}
+                    
                 >
                     Home
                 </NavLink>
             </li>
             {props.links.map(link=> {
                 return (            
-                    <li>
+                    <li key={`${link}`}>
                         <NavLink 
                             to={`/${link}`} 
                             className={`block p-2 rounded ${location.pathname.toLocaleLowerCase() === `/${link.toLowerCase()}` ? 'bg-purple text-white' : 'hover:bg-gray-200'}`}
                             onClick = {() => {
                                 if(link=="dashboard")  {props.changeSideBar(false)}
                             }}
+                            
                         >
                             {`${link.charAt(0).toUpperCase() + link.slice(1)}`}
                         </NavLink>

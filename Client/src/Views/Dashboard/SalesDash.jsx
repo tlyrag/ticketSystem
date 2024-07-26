@@ -46,18 +46,20 @@ const Sales = () => {
      * @returns 
      */
 
-    const salesSearch = async (query,queryParams) => {
+    
+    const salesSearch = async (query,queryParams,system) => {
+        console.log(queryParams)
         const params = {
-            'reorder': apiController.reorderNotice(queryParams),
+            'reorder': () => apiController.reorderNotice(queryParams,system),
+            'order':() =>apiController.runQuery(query,queryParams,system)
         }
-
 
         try {
             sethasData(false)
             setcustData([])
             setbtnIsFetching(true)
             let custInv = null
-            let result =  await params[query]
+            let result =  await params[query]()
             setcustData(result.response);
 
             //setcustData(custInv.InvResult);
@@ -89,8 +91,8 @@ const Sales = () => {
                     // If is Loading this is being Rendered
                     isFetching ?
                     <div className="animate-pulse">
-                        <h1 class="text-purple text-9xl">
-                            <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+                        <h1 className="text-purple text-9xl">
+                            <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
                             </svg>
                             Loading
                         </h1>

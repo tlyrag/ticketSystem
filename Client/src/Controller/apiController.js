@@ -99,17 +99,40 @@ const generateExcelFile =(excelInfo) => {
     .catch(err=> console.log(`Failed to generateExcel ${err}`))
     
 }
-const reorderNotice = (startDate,endDate,system) => {
+const reorderNotice = (params,system) => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(startDate,endDate,system)
+        body: JSON.stringify({
+            params:params,
+            system:system
+        })
     };
     return fetch(apiModel.reorderNotice(), requestOptions)
     .then(response =>response.json())
     .then(data => {return data})
     .catch(err=> console.log(`Failed to run reorder notice ${err}`))
 }
+
+
+const runQuery = (query,params,system) => {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+           {query:query,
+            params:params,
+            system:system
+           } 
+        )
+    };
+    return fetch(apiModel.runQuery(), requestOptions)
+    .then(response =>response.json())
+    .then(data => {return data})
+    .catch(err=> console.log(`Failed to run reorder notice ${err}`))
+}
+
 export default {
     fetchAllTickets,
     addTicket,
@@ -121,5 +144,6 @@ export default {
     getInventory,
     getMonarchInventory,
     generateExcelFile,
-    reorderNotice
+    reorderNotice,
+    runQuery
 }
