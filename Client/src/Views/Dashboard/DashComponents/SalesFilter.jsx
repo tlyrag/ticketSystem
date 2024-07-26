@@ -88,19 +88,23 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
     const queryFilters = {
         '':[<></>],
         'reorder' :[<SalesDropDown/>,<SystemDropDown/>,<StartDate/>,<EndDate/>],
-        'order' :[<></>]
+        'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
     }
 
     const queryParams ={
         'reorder': {
             'startDate':startDate.split('-').join(''),
             'endDate':endDate.split('-').join(''),
-            'system':selectedSystem,
+        },
+        'order' :{
+            'startDate':startDate.split('-').join(''),
+            'endDate':endDate.split('-').join(''),
         }
     }
     //////////////////////////////////////////// Event Handlers/////////////////////////////////////////    
     const handleQueryDownChange = (e) => {
         setselectedQuery(e.target.value);
+
     };
     const handleSellerDownChange = (e) => {
         setselectedSeller(e.target.value);
@@ -136,7 +140,7 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
                 })
             }
 
-                <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => salesSearch(selectedQuery,queryParams[selectedQuery])}>
+                <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => salesSearch(selectedQuery,queryParams[selectedQuery],selectedSystem)}>
                     Search
                 </button>
 

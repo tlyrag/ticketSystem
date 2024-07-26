@@ -68,7 +68,7 @@ export default(app) => {
     app.post('/addTicket',async (req,res) => {
        
         try {
-            console.log(req.body)
+
             await DBController.addTicket(req.body);
             res.status(200).json({
                 ok: true,
@@ -88,7 +88,6 @@ export default(app) => {
        
         try {
             const id = req.params.id;
-            console.log(id)
             await DBController.completeTicket(id);
             res.status(200).json({
                 ok: true,
@@ -207,7 +206,7 @@ export default(app) => {
 
             let inventory = await PythonServerController.runInventory(companyId, system);
     
-            //console.log(result);
+
             res.status(200).json({
                 ok: true,
                 InvResult: inventory,
@@ -250,14 +249,24 @@ export default(app) => {
     })
     
     app.post('/reorderNotice',async(req,res)=> {
-        console.log("Running Reorder")
-        const startDate = req.body.startDate
-        const endDate = req.body.endDate
+        const startDate = req.body.params.startDate
+        const endDate = req.body.params.endDate
         const system = req.body.system
         const params = [startDate,endDate]
-        console.log(startDate)
-        console.log(endDate)
         let response = await PythonServerController.reorderNotice(params,system)
+
+        res.status(200).json({
+            ok:true,
+            response:response
+        })
+    })
+
+    app.post('/runQuery',async(req,res)=> {
+        const system = req.body.system
+        const params = req.body.params
+        const query = req.body.query
+        const paramsArray = Object.values(params);
+        let response = await PythonServerController.runQuery(query,paramsArray,system)
 
         res.status(200).json({
             ok:true,

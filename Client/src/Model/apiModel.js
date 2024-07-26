@@ -39,6 +39,9 @@ const generateExcel =() =>{
 const reorderNotice = () => {
     return `${getApiUrl()}/reordernotice` 
 }
+const runQuery = () => {
+    return `${getApiUrl()}/runQuery` 
+}
 export default {
     getApiUrl,
     tickets,
@@ -51,6 +54,7 @@ export default {
     getInventory,
     getMonarchInventory,
     generateExcel,
-    reorderNotice
+    reorderNotice,
+    runQuery
 
 }

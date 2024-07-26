@@ -116,17 +116,20 @@ function App() {
         </div>
         <div className="w-10/12 p-4 bg-pink"> 
         <Routes>
-            <Route path="/" element={ 
-              <MainContent 
-                Tickets={Tickets} 
-                isLoading={isLoading} 
-                filterTickets={filterTicket} 
-                hasTickets={hasTickets} 
-                filterTicketByCreateDate={filterTicketByCreateDate}
-                filterTicketByCompleteDate={filterTicketByCompleteDate}
-                user={user}
-              /> 
-            }/>
+            <Route path="/" 
+              // element={ 
+              //   <MainContent 
+              //     Tickets={Tickets} 
+              //     isLoading={isLoading} 
+              //     filterTickets={filterTicket} 
+              //     hasTickets={hasTickets} 
+              //     filterTicketByCreateDate={filterTicketByCreateDate}
+              //     filterTicketByCompleteDate={filterTicketByCompleteDate}
+              //     user={user}
+              //   /> 
+              // }
+              element={<Inventory  user={user}/>}
+            />
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
             <Route path="/inventory" element={<Inventory  user={user}/>} />
             <Route path="/sales" element={<Sales  user={user}/>} />
