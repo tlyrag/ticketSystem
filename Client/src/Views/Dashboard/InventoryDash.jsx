@@ -1,10 +1,12 @@
-import BarChart from "./Charts/BarChart";
-import PltBarChart from "./Charts/PltBarChart"
+
+import ExtSellChart from "./Charts/SalesCharts/ExtMonthLineChart"
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
 import SummaryCard from './DashComponents/Cards';
 import Filters from "./DashComponents/Filters";
+import InitialDataPage from "./DashComponents/InitialDataPage";
+import NotFoundPage from "./DashComponents/NotFound";
 
 const Inventory = () => {
     /// Data //
@@ -14,11 +16,13 @@ const Inventory = () => {
     const [fetchedCompany, setfetchedCompany] = useState();
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
+    const [custId, setcustId] = useState("");
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
     const [btnIsSaving, setbtnIsSaving] = useState(false);
     const [showToast, setshowToast] = useState(false);
+    const [initialPage, setinitialPage] = useState(true);
     
     
     const generateExcel= async() => {
@@ -50,21 +54,29 @@ const Inventory = () => {
             sethasData(false)
             setcustData([])
             setbtnIsFetching(true)
+            setinitialPage(false)
             let custInv = null
+            setcustId(custId)
             setfetchedCompany(custId);
             if(system === 'qm1' || system === 'qm2') {
                 custInv = await apiController.getInventory(custId,system);
                 setcustData(custInv.InvResult);
                 setfetchedSystem('qm1');
-                calculateTotalQuantity(custInv.InvResult);
-                sethasData(true);
+                calculateTotalQuantity(custInv.InvResult);                
+                if(custInv && custInv.InvResult.length>0) {
+                    sethasData(true);
+                }
                 setbtnIsFetching(false)
             } else if(system==='monarch') {
                 custInv = await apiController.getMonarchInventory(custId);
                 setcustData(custInv.InvResult);
                 setfetchedSystem('monarch');
                 calculateTotalQuantity(custInv.InvResult);
-                sethasData(true);
+                
+                if(custInv && custInv.InvResult.length>0) {
+                    console.log("GOt Here")
+                    sethasData(true);
+                }
                 setbtnIsFetching(false)
             } else if (system ==='all') {
                 const inventorySources = [
@@ -141,14 +153,18 @@ const Inventory = () => {
                     // If is Loading this is being Rendered
                     isFetching ?
                     <div className="animate-pulse">
-                        <h1 class="text-purple text-9xl">
-                            <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+                        <h1 className="text-purple text-9xl">
+                            <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
                             </svg>
                             Loading
                         </h1>
                     </div>
                     :
-                    <>No Data</>
+                    // If its initial Data
+                    initialPage ?
+                    <InitialDataPage/>
+                    :
+                    <NotFoundPage dataName={"Customer ID"} dataValue ={custId}/>
                 }
 
         </div>
@@ -163,7 +179,7 @@ const Inventory = () => {
                         {
                             showToast ?
                                 <div id="toast-bottom-right" className="fixed flex items-center w-full max-w-xs p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
-                                    <div class=" font-normal text-white">Excel successfully saved!</div>
+                                    <div className=" font-normal text-white">Excel successfully saved!</div>
                                 </div>
                             :
                                 <></>
@@ -176,6 +192,7 @@ const Inventory = () => {
             <div className="grid grid-cols-2 gap-4 mt-5">
                 {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
                 {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
+                 {hasData ? <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell'/> : <></>} 
             </div>
         </div>
     );
