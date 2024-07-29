@@ -8,6 +8,7 @@ import { useState,useEffect } from 'react';
 import apiController from './Controller/apiController';
 import Inventory from './Views/Dashboard/InventoryDash'
 import Sales from './Views/Dashboard/SalesDash';
+import DashBoardMain from './Views/Dashboard/DashBoardMain';
 
 /// to be replaced once login is created
 const loggedUser = {
@@ -128,12 +129,12 @@ function App() {
               //     user={user}
               //   /> 
               // }
-              element={<Inventory  user={user}/>}
+              element={<DashBoardMain  user={user}/>}
             />
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
             <Route path="/inventory" element={<Inventory  user={user}/>} />
             <Route path="/sales" element={<Sales  user={user}/>} />
-            <Route path="/dashboard" element={<Inventory  user={user}/>} />
+            <Route path="/dashboard" element={<DashBoardMain  user={user}/>} />
           </Routes>
         </div>
         </Router>

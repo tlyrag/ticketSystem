@@ -6,10 +6,10 @@ const LinkCreator = (props) => {
     return (
         <div className="bg-white text-purple flex-grow flex flex-col transition duration-150 ease-in-out">
         {/* User Profile */}
-        <div className="flex flex-col items-center py-5">
+        {/* <div className="flex flex-col items-center py-5">
             <img src={props.user.imageUrl} alt="User" className="w-20 h-20 rounded-full border-2 border-purple-500"/>
             <p className="mt-2 font-semibold">{props.user.name}</p>
-        </div>
+        </div> */}
 
         {/* Navigation Menu */}
         <ul className="flex-grow space-y-4 p-5 overflow-y-auto" >

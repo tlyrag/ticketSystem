@@ -1,26 +1,27 @@
-import BarChart from "./Charts/BarChart";
-import PltBarChart from "./Charts/PltBarChart"
+
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
 import SummaryCard from './DashComponents/Cards';
 import Filters from "./DashComponents/Filters";
 import SalesFilters from "./DashComponents/SalesFilter";
-
+import InitialDataPage from './DashComponents/InitialDataPage';
+import NotFoundPage from './DashComponents/NotFound';
 const Sales = () => {
     /// Data //
     const [custData, setcustData] = useState([]);
-    const [hasData, sethasData] = useState(false);
     const [fetchedSystem, setfetchedSystem] = useState();
     const [fetchedCompany, setfetchedCompany] = useState();
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
+    const [queryRan, setqueryRan] = useState();
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
     const [btnIsSaving, setbtnIsSaving] = useState(false);
     const [showToast, setshowToast] = useState(false);
-    
+    const [initialData, setinitialData] = useState(true);
+    const [hasData, sethasData] = useState(false);
     
     const generateExcel= async() => {
         setbtnIsSaving(true)
@@ -55,17 +56,22 @@ const Sales = () => {
         }
 
         try {
+            setqueryRan(query)
+            setfetchedSystem(system)
             sethasData(false)
             setcustData([])
             setbtnIsFetching(true)
+            setinitialData(false)
             let custInv = null
             let result =  await params[query]()
             setcustData(result.response);
+            console.log(result.response)
 
-            //setcustData(custInv.InvResult);
-            // setfetchedSystem('quantum');
-            // calculateTotalQuantity(custInv.InvResult);
-            sethasData(true);
+            if(result.response && result.response.length >0)
+            {sethasData(true);}
+            else 
+            {setinitialData(false) }
+            
             setbtnIsFetching(false)
             
         } catch (error) {
@@ -98,7 +104,11 @@ const Sales = () => {
                         </h1>
                     </div>
                     :
-                    <>No Data</>
+                    initialData
+                    ?
+                    <InitialDataPage/>
+                    :
+                    <NotFoundPage dataValue ={`${fetchedSystem}`} dataName ={`${queryRan} results`}/>
                 }
         </div>
              { 
