@@ -25,7 +25,6 @@ const ExtendedSellChart = (props) => {
     };
 
     let ExtcharData =aggregateDataByMonth(props.data);
-    console.log(ExtcharData)
 
     return (
         

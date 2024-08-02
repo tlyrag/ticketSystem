@@ -20,10 +20,10 @@ const runInventory =(company,system) => {
 
 
 const generateExcel =(custData,inputPath,outputPath) => {
+    console.log(inputPath)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-
         body:JSON.stringify( {
             cust_data: custData,
             input_path:inputPath,
@@ -61,7 +61,6 @@ const reorderNotice = (params,system)=> {
                 "system":system
         })
     }
-    console.log(requestOptions)
     return fetch(pythonModel.reorderNotice(),requestOptions)
     .then(response=> response.json())
     .then(data=> {

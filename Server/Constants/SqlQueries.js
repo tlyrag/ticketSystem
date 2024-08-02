@@ -21,14 +21,13 @@ const custInventory = () => {
     CONCAT(PAP.DESCRIPTION1, PAP.DESCRIPTION2, PAP.DESCRIPTION3) AS Item_Description,
     FORMAT(J.date_promised,'yyyy-MM-dd') as monarch_promisse_date, 
 	FORMAT(RLS.[DATE RECEIVED],'yyyy-MM-dd') as printstream_receive_date,
-	SUBSTRING(RLS.notes,0,2) as isQ,
+	--SUBSTRING(RLS.notes,0,2) as isQ,
 	CASE SUBSTRING(RLS.notes,0,2)
 		WHEN 'Q' THEN FORMAT(J.date_promised,'yyyy-MM-dd')
 		ELSE FORMAT(RLS.[DATE RECEIVED],'yyyy-MM-dd')
 	END AS actual_received_date,
     j.job_id,
     J.po_number,
-    j.mailing_qty,
     j.quantity_ordered,
         CASE PAP.[ACTIVITY CODE]
     	WHEN '9000003' THEN 'D'
@@ -41,8 +40,7 @@ const custInventory = () => {
     PAP.[UNIT ISSUE DESC] AS 'UOD DESCRIPTION',
     FORMAT(PAP.[REVISE DATE],'yyyy-MM-dd') as revise_date,
     PAP.[SELL PRICE] AS 'SELL PRICE',
-    PAP.[SELL PRICE] * sum(QTY) AS EXTENDED_SELL,
-    sum(QTY) AS QUANTITY_ON_ORDER
+    PAP.[SELL PRICE] * sum(QTY) AS EXTENDED_SELL
 FROM 
     gams1.DBO.job j
 INNER JOIN 
