@@ -1,5 +1,5 @@
 
-import ExtSellChart from "./Charts/SalesCharts/ExtMonthLineChart"
+
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
@@ -7,6 +7,10 @@ import SummaryCard from './DashComponents/Cards';
 import Filters from "./DashComponents/Filters";
 import InitialDataPage from "./DashComponents/InitialDataPage";
 import NotFoundPage from "./DashComponents/NotFound";
+// Charts
+import ExtSellChart from "./Charts/InventoryCharts/ExtMonthLineChart"
+import PieChartInventoryByOwner from './Charts/InventoryCharts/InvOwnerPieChart';
+import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
 
 const Inventory = () => {
     /// Data //
@@ -74,7 +78,7 @@ const Inventory = () => {
                 calculateTotalQuantity(custInv.InvResult);
                 
                 if(custInv && custInv.InvResult.length>0) {
-                    console.log("GOt Here")
+
                     sethasData(true);
                 }
                 setbtnIsFetching(false)
@@ -87,9 +91,7 @@ const Inventory = () => {
                 let iterator = 1
                 for (const getSource of inventorySources) {
                     const result = await getSource();
-                    console.log(inventorySources.length)
-                    console.log(iterator)
-                    console.log(result.InvResult.length)
+
 
                     if (result && result.InvResult.length > 0) {
                         setcustData(result.InvResult);
@@ -129,7 +131,7 @@ const Inventory = () => {
             } 
             //From Monarch
             else {
-                totalQtdOnHand += data["UOD QUANTITY"] 
+                totalQtdOnHand += data["QTY ON HAND"] 
             }
             settotalSell( `$ ${(Math.round(totalExtendedSell * 100) / 100).toFixed(2)}`);
             settotalQtd(totalQtdOnHand);
@@ -142,13 +144,23 @@ const Inventory = () => {
         <div className="h-full bg-white drop-shadow-3xl m">
             <Filters getData={getData} isFetching={isFetching}/>
 
-            <div className="flex flex-col items-center w-full p-4">
+            <div className="flex flex-col items-center w-full p-4 ">
                 {
                     hasData ? 
-                         <div className="flex flex-wrap justify-around w-full max-w-4xl">
+                    <>
+                        <div className="flex flex-wrap justify-around w-full max-w-4xl">
                             <SummaryCard title="Total Quantity On Hand" value={totalQtd} />
-                            <SummaryCard title="Total Extended Sell" value={totalSell} /> 
+                            <SummaryCard title="Total Extended Sell" value={totalSell} />
                         </div>
+                        <div className="grid grid-cols-2 gap-4 mt-5 shadow-lg ">
+                            <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell' />
+                            <PieChartInventoryByOwner data={custData}/>
+                        </div>
+                        <div className="flex flex-wrap justify-around w-full max-w-4xl mt-5 shadow-lg">
+                            <JobMonthBarChart data={custData}/>
+                        </div>
+                        
+                    </>
                     :
                     // If is Loading this is being Rendered
                     isFetching ?
@@ -192,7 +204,7 @@ const Inventory = () => {
             <div className="grid grid-cols-2 gap-4 mt-5">
                 {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
                 {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
-                 {hasData ? <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell'/> : <></>} 
+                 {/* {hasData ? <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell'/> : <></>}  */}
             </div>
         </div>
     );

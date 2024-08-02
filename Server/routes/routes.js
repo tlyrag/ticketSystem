@@ -240,6 +240,7 @@ export default(app) => {
 
         let inputPath = ExcelConstants.templatePath(template)
         let outputPath = ExcelConstants.outputPath(`${company}_${query}_${today}`)
+
         let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
         res.status(200).json({
             ok: true,

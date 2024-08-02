@@ -49,7 +49,7 @@ const Sales = () => {
 
     
     const salesSearch = async (query,queryParams,system) => {
-        console.log(queryParams)
+        
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system)
@@ -65,8 +65,7 @@ const Sales = () => {
             let custInv = null
             let result =  await params[query]()
             setcustData(result.response);
-            console.log(result.response)
-
+    
             if(result.response && result.response.length >0)
             {sethasData(true);}
             else 
