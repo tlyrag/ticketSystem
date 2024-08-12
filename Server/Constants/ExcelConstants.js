@@ -1,16 +1,23 @@
 const templateFilePath = {
-    inventoryqm1: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
-    inventoryqm2: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
-    inventoryPS: "P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
-    inventorymonarch:"P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
-}
-const templatePath = (query) => {
+    inventory:{    
+        qm1: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
+        qm2: "P:\\Reports\\testing\\Templates\\InventoryQMTemplate.xlsx",
+        PS: "P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
+        monarch:"P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
+    },
+    job_receive_status: {
+        PS: "P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+        monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+    }
 
-    return templateFilePath[query]
+}
+const templatePath = (query,system) => {
+
+    return templateFilePath[query][system]
 }
 
-const outputPath = (filename) => {
-    return `P:\\Reports\\testing\\Outputs\\Inventory\\${filename}.xlsx`
+const outputPath = (query,filename) => {
+    return `P:\\Reports\\testing\\Outputs\\${query}\\${filename}.xlsx`
 }
 export default {
      templatePath,

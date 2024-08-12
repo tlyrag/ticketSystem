@@ -34,6 +34,7 @@ const custInventory = () => {
     	WHEN '9000001' THEN 'C'
     	ELSE ' ' 
     END AS OWNER_IND,
+    sum(QTY) AS QUANTITY_ON_ORDER,
     PAP.[QTY ON HAND],
     PAP.[COMMIT ON ORDER],
     PAP.[UNIT OF ISSUE] AS 'UOD QUANTITY',

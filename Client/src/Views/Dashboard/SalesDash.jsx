@@ -3,8 +3,7 @@ import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
 import SummaryCard from './DashComponents/Cards';
-import Filters from "./DashComponents/Filters";
-import SalesFilters from "./DashComponents/SalesFilter";
+import SalesFilters from "./DashComponents/DynamicFilter";
 import InitialDataPage from './DashComponents/InitialDataPage';
 import NotFoundPage from './DashComponents/NotFound';
 const Sales = () => {
@@ -83,7 +82,7 @@ const Sales = () => {
     return (
         
         <div className="h-full bg-white drop-shadow-3xl m">
-            <SalesFilters salesSearch={salesSearch} isFetching={isFetching}/>
+            <SalesFilters search={salesSearch} isFetching={isFetching} view='sales'/>
 
             <div className="flex flex-col items-center w-full p-4">
                 {

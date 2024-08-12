@@ -1,10 +1,8 @@
-
-
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
 import SummaryCard from './DashComponents/Cards';
-import Filters from "./DashComponents/Filters";
+import DynamicFilters from './DashComponents/DynamicFilter';
 import InitialDataPage from "./DashComponents/InitialDataPage";
 import NotFoundPage from "./DashComponents/NotFound";
 // Charts
@@ -12,32 +10,75 @@ import ExtSellChart from "./Charts/InventoryCharts/ExtMonthLineChart"
 import PieChartInventoryByOwner from './Charts/InventoryCharts/InvOwnerPieChart';
 import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
 
-const Inventory = () => {
+const FgoodsDash = () => {
+
     /// Data //
+    const [initialPage, setinitialPage] = useState(true);
+    const [custId, setcustId] = useState("");
+    const [outputPath, setoutputPath] = useState("");    
     const [custData, setcustData] = useState([]);
-    const [hasData, sethasData] = useState(false);
     const [fetchedSystem, setfetchedSystem] = useState();
     const [fetchedCompany, setfetchedCompany] = useState();
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
-    const [custId, setcustId] = useState("");
-    const [outputPath, setoutputPath] = useState("");
+    const [queryRan, setqueryRan] = useState();
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
     const [btnIsSaving, setbtnIsSaving] = useState(false);
     const [showToast, setshowToast] = useState(false);
-    const [initialPage, setinitialPage] = useState(true);
+    const [initialData, setinitialData] = useState(true);
+    const [hasData, sethasData] = useState(false);
     
+    const search = async (query,queryParams,system) => {
+
+        const params = {
+            'reorder': () => apiController.reorderNotice(queryParams,system),
+            'order':() =>apiController.runQuery(query,queryParams,system),
+            'job_receive_status':()=> {
+                let splitParams = queryParams.job_id.split(',')
+                return apiController.runQuery(query,splitParams,system)
+            }
+        }
+
+        try {
+            console.log(query)
+            console.log(queryParams)
+            console.log(system)
+            setqueryRan(query)
+            setfetchedSystem(system)
+            sethasData(false)
+            setcustData([])
+            setbtnIsFetching(true)
+            setinitialData(false)
+            let custInv = null
+            let result =  await params[query]()
+            console.log(result)
+            setcustData(result.response);
     
-    const generateExcel= async() => {
+            if(result.response && result.response.length >0)
+            {sethasData(true);}
+            else 
+            {setinitialData(false) }
+            
+            setbtnIsFetching(false)
+            
+        } catch (error) {
+            console.error("Failed to fetch inventory:", error);
+
+        }
+    };
+
+    
+    const generateExcel= async(query) => {
         setbtnIsSaving(true)
         let excelInfo = {
             custData:custData,
             system:fetchedSystem,
-            company:fetchedCompany,
-            query:"inventory"
+            company:"",
+            query:query
         }
+    console.log(excelInfo.company)
       let excelresult = await apiController.generateExcelFile(excelInfo)
       setoutputPath(excelresult.outputPath)
       setbtnIsSaving(false);
@@ -55,93 +96,24 @@ const Inventory = () => {
      * @returns 
      */
 
-    const getData = async (custId,system) => {
-        try {
-            sethasData(false)
-            setcustData([])
-            setbtnIsFetching(true)
-            setinitialPage(false)
-            let custInv = null
-            setcustId(custId)
-            setfetchedCompany(custId);
-            if(system === 'qm1' || system === 'qm2') {
-                custInv = await apiController.getInventory(custId,system);
-                setcustData(custInv.InvResult);
-                setfetchedSystem('qm1');
-                calculateTotalQuantity(custInv.InvResult);                
-                if(custInv && custInv.InvResult.length>0) {
-                    sethasData(true);
-                }
-                setbtnIsFetching(false)
-            } else if(system==='monarch') {
-                custInv = await apiController.getMonarchInventory(custId);
-                setcustData(custInv.InvResult);
-                setfetchedSystem('monarch');
-                calculateTotalQuantity(custInv.InvResult);
-                
-                if(custInv && custInv.InvResult.length>0) {
 
-                    sethasData(true);
-                }
-                setbtnIsFetching(false)
-            } else if (system ==='all') {
-                const inventorySources = [
-                    () => apiController.getMonarchInventory(custId),
-                    () => apiController.getInventory(custId, 'qm2'),
-                    () => apiController.getInventory(custId, 'qm1')
-                ];
-                let iterator = 1
-                for (const getSource of inventorySources) {
-                    const result = await getSource();
-
-
-                    if (result && result.InvResult.length > 0) {
-                        setcustData(result.InvResult);
-                        sethasData(true);
-                        setfetchedSystem(result.system);
-                        setbtnIsFetching(false)
-                        calculateTotalQuantity(result.InvResult);
-                        return;  
-                    } 
-                    iterator++;
-                    if(iterator===inventorySources.length && result.InvResult.length==0) {
-                        sethasData(false)
-                        setbtnIsFetching(false)
-                    }
-
-                }
-              
-                
-            }
             
             
-            
-        } catch (error) {
-            console.error("Failed to fetch inventory:", error);
-
-        }
-    };
 
     const calculateTotalQuantity =async(custData) => {
         let totalExtendedSell =0;
         let totalQtdOnHand = 0;
-        let USDollar = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-
         custData.forEach(data => {
             totalExtendedSell += data.EXTENDED_SELL;
             //From Quantum
-            if(data.QUANTITY_ON_ORDER
-            ) {
-                totalQtdOnHand += data.QUANTITY_ON_ORDER
+            if(data.QTY_ON_HAND) {
+                totalQtdOnHand += data.QTY_ON_HAND
             } 
             //From Monarch
             else {
                 totalQtdOnHand += data["QTY ON HAND"] 
             }
-            settotalSell( `${( USDollar.format(Math.round(totalExtendedSell * 100) / 100))}`);
+            settotalSell( `$ ${(Math.round(totalExtendedSell * 100) / 100).toFixed(2)}`);
             settotalQtd(totalQtdOnHand);
         });
         
@@ -150,13 +122,12 @@ const Inventory = () => {
     return (
         
         <div className="h-full bg-white drop-shadow-3xl m">
-            <Filters getData={getData} isFetching={isFetching}/>
-
+            <DynamicFilters search={search} isFetching={isFetching} view='fgoods'/>
             <div className="flex flex-col items-center w-full p-4 ">
                 {
                     hasData ? 
                     <>
-                        <div className="flex flex-wrap justify-around w-full max-w-4xl">
+                        {/* <div className="flex flex-wrap justify-around w-full max-w-4xl">
                             <SummaryCard title="Total Quantity On Hand" value={totalQtd} />
                             <SummaryCard title="Total Extended Sell" value={totalSell} />
                         </div>
@@ -166,7 +137,7 @@ const Inventory = () => {
                         </div>
                         <div className="flex flex-wrap justify-around w-full max-w-4xl mt-5 shadow-lg">
                             <JobMonthBarChart data={custData}/>
-                        </div>
+                        </div> */}
                         
                     </>
                     :
@@ -193,7 +164,7 @@ const Inventory = () => {
                 <>
                     <DataTable custData={custData} /> 
                     <div className="flex items-center justify-center h-16">
-                        <button className={` ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => generateExcel()}>
+                        <button className={` ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => generateExcel(queryRan)}>
                             Generate Excel
                         </button>
                         {
@@ -223,7 +194,7 @@ const Inventory = () => {
     );
 };
 
-export default Inventory;
+export default FgoodsDash;
 
 
 

@@ -96,6 +96,8 @@ const generateExcelFile =(excelInfo) => {
         body: JSON.stringify(excelInfo)
     };
     return fetch(apiModel.generateExcel(), requestOptions)
+    .then(response=> response.json())
+    .then(data=>data)
     .catch(err=> console.log(`Failed to generateExcel ${err}`))
     
 }

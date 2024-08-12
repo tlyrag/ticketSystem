@@ -228,7 +228,6 @@ export default(app) => {
         const custData = req.body.custData
         const company = req.body.company
         const query = req.body.query
-        const template = query+system
 
         let date = new Date()
         const year = date.getFullYear();
@@ -238,8 +237,8 @@ export default(app) => {
         const minute = date.getMinutes().toString().padStart(2, '0');
         let today = `${year}_${month}_${day}_${hour}_${minute}`;
 
-        let inputPath = ExcelConstants.templatePath(template)
-        let outputPath = ExcelConstants.outputPath(`${company}_${query}_${today}`)
+        let inputPath = ExcelConstants.templatePath(query,system)
+        let outputPath = ExcelConstants.outputPath(query,`${company}_${query}_${today}`)
 
         let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
         res.status(200).json({

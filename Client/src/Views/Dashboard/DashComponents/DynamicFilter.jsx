@@ -1,11 +1,12 @@
-import React, { useDebugValue, useEffect, useState } from 'react';
-const SalesFilters = ({ salesSearch,isFetching }) => {
+import React, { useDebugValue, useEffect, useState, memo } from 'react';
+const DynamicFilters = ({ search,isFetching,view }) => {
     const [company, setCompany] = useState('');
     const [selectedSeller, setselectedSeller] = useState('');
     const [selectedSystem, setselectedSystem] = useState('');
     const [selectedQuery, setselectedQuery] = useState('');
     const [startDate, setstartDate] = useState('');
     const [endDate, setendDate] = useState('');
+    const [textData, settextData] = useState('');
 
     ///////////////////////////////////// JSX Filter Components ///////////////////////////////
     const SalesDropDown = () => {
@@ -66,6 +67,8 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
         )
     }
 
+
+
     ///////////////////////////////////// Objects Values ///////////////////////////////
     const dropdownSystems =[    
         {value:'',label:"Select System"},
@@ -74,11 +77,19 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
         { value: 'quantum', label: 'Quantum' },
     ] 
 
-    const dropdownQueryOptions = [
-        {value:'',label:"Select Query"},
-        { value: 'reorder', label: 'Reorder Notice' },
-        { value: 'order', label: 'Client Back Order' },
-    ];
+    const dropdownQueryOptions = {
+        "sales": [
+            {value:'',label:"Select Query"},
+            { value: 'reorder', label: 'Reorder Notice' },
+            { value: 'order', label: 'Client Back Order' },
+        ],
+        "fgoods":[
+            {value:'',label:"Select Query"},
+            { value: 'job_receive_status', label: 'Job Receive Status' },
+            { value: 'warehouse_search', label: 'Warehouse Search' },
+        ]
+
+    };
 
     const dropdownSellerOptions = [
         {value:'',label:"Select Seller"},
@@ -86,9 +97,17 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
 
     ];
     const queryFilters = {
-        '':[<></>],
-        'reorder' :[<SalesDropDown/>,<SystemDropDown/>,<StartDate/>,<EndDate/>],
-        'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
+        'sales':{
+            '':[<></>],
+            'reorder' :[<SalesDropDown/>,<SystemDropDown/>,<StartDate/>,<EndDate/>],
+            'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
+        },
+        'fgoods': {
+            '':[<></>],
+            'job_receive_status' :[<SystemDropDown/>],
+            'warehouse_search' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
+        }
+
     }
 
     const queryParams ={
@@ -99,6 +118,9 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
         'order' :{
             'startDate':startDate.split('-').join(''),
             'endDate':endDate.split('-').join(''),
+        },
+        'job_receive_status':{
+            'job_id':textData
         }
     }
     //////////////////////////////////////////// Event Handlers/////////////////////////////////////////    
@@ -118,6 +140,16 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
     const handleEndDateChange =(e) => {
         setendDate(e.target.value)
     }
+    const handleTextChange = (e) => {
+        settextData(e.target.value);
+        
+    };
+    
+    const handleTextKeyDownChange = (e) => {
+        if (e.key === 'Enter') {
+            //getData(company,selectedSystem);
+        }
+    };
 
     //////////////////////////////////////// MAin JSX Component////////////////////////////////
     return (
@@ -128,19 +160,29 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
                     value={selectedQuery}
                     onChange={handleQueryDownChange}
                 >
-                    {dropdownQueryOptions.map(option => (
+                    {dropdownQueryOptions[view].map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
                     ))}
             </select>
             {
-                queryFilters[selectedQuery].map((item)=> {
+                queryFilters[view][selectedQuery].map((item)=> {
                     return item
                 })
             }
-
-                <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => salesSearch(selectedQuery,queryParams[selectedQuery],selectedSystem)}>
+            {
+                view==='fgoods' && selectedQuery==='job_receive_status'?         
+                    <input
+                        type="text"
+                        placeholder= "Enter Job Number ex: 61234,65678,69878"
+                        className="flex-1 p-2 border rounded"
+                        value={textData}
+                        onChange={handleTextChange}
+                        onKeyDown={handleTextKeyDownChange}
+                    />  
+                :   <></>}
+                <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => search(selectedQuery,queryParams[selectedQuery],selectedSystem)}>
                     Search
                 </button>
 
@@ -148,4 +190,4 @@ const SalesFilters = ({ salesSearch,isFetching }) => {
         </div>
     );
 };
-export default SalesFilters
+export default DynamicFilters
