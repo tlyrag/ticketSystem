@@ -267,8 +267,15 @@ export default(app) => {
         const query = req.body.query
         const paramsArray = Object.values(params);
         let response = await PythonServerController.runQuery(query,paramsArray,system)
+ 
+        if (response.error) {
+           return res.status(500).json({
+                 ok:false,
+                 response:response
+             })
 
-        res.status(200).json({
+        }
+        return res.status(200).json({
             ok:true,
             response:response
         })

@@ -82,11 +82,20 @@ const runQuery =(query,params,system) => {
         })
     };
 
-    return fetch(pythonModel.runQuery(),requestOptions).then(response=>response.json())
-    .then(data=> {
-        return data
+    return fetch(pythonModel.runQuery(), requestOptions)
+    .then(response => {
+        if (!response.ok) { 
+            throw new Error(response.status.toString());
+        }
+        return response.json();
     })
-    .catch(err=> console.log(`Failed to run query ${err}`))
+    .then(data => {
+        return data;
+    })
+    .catch(err => {
+        console.error(`Failed to run query with status ${err.message}`);
+        return { error: true, statusCode: err.message };
+    });
     
 }
 

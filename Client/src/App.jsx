@@ -105,7 +105,7 @@ function App() {
   }
     useEffect(() => {
       console.log()
-      fetchTicket();
+      // fetchTicket();
     }, []);
 
 

@@ -25,7 +25,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         )
     }
 
-    const SystemDropDown = () => {
+    const SystemDropDown = (props) => {
         return (
             <select
             className="border rounded p-2"
@@ -72,7 +72,6 @@ const DynamicFilters = ({ search,isFetching,view }) => {
     ///////////////////////////////////// Objects Values ///////////////////////////////
     const dropdownSystems =[    
         {value:'',label:"Select System"},
-        { value: 'all', label: 'Search all' },
         { value: 'monarch', label: 'Monarch/PrintStream' },
         { value: 'quantum', label: 'Quantum' },
     ] 
@@ -99,7 +98,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
     const queryFilters = {
         'sales':{
             '':[<></>],
-            'reorder' :[<SalesDropDown/>,<SystemDropDown/>,<StartDate/>,<EndDate/>],
+            'reorder' :[<SalesDropDown/>,<SystemDropDown />,<StartDate/>,<EndDate/>],
             'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
         },
         'fgoods': {
@@ -120,7 +119,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'endDate':endDate.split('-').join(''),
         },
         'job_receive_status':{
-            'job_id':textData
+            'job_id':textData.trim()
         }
     }
     //////////////////////////////////////////// Event Handlers/////////////////////////////////////////    

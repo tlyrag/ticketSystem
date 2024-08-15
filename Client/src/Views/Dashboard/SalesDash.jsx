@@ -21,6 +21,7 @@ const Sales = () => {
     const [showToast, setshowToast] = useState(false);
     const [initialData, setinitialData] = useState(true);
     const [hasData, sethasData] = useState(false);
+    const [reqStatus, setreqStatus] = useState();
     
     const generateExcel= async() => {
         setbtnIsSaving(true)
@@ -67,8 +68,15 @@ const Sales = () => {
     
             if(result.response && result.response.length >0)
             {sethasData(true);}
+            else if(!result.ok) {
+                setinitialData(false) 
+                setreqStatus(500) 
+            }
             else 
-            {setinitialData(false) }
+            {
+                setinitialData(false) 
+                setreqStatus(404) 
+            }
             
             setbtnIsFetching(false)
             
@@ -106,7 +114,7 @@ const Sales = () => {
                     ?
                     <InitialDataPage/>
                     :
-                    <NotFoundPage dataValue ={`${fetchedSystem}`} dataName ={`${queryRan} results`}/>
+                    <NotFoundPage status = {reqStatus} dataValue ={`${fetchedSystem}`} dataName ={`${queryRan} results`}/>
                 }
         </div>
              { 

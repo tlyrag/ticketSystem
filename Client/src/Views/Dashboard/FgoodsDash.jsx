@@ -13,7 +13,6 @@ import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
 const FgoodsDash = () => {
 
     /// Data //
-    const [initialPage, setinitialPage] = useState(true);
     const [custId, setcustId] = useState("");
     const [outputPath, setoutputPath] = useState("");    
     const [custData, setcustData] = useState([]);
@@ -22,6 +21,7 @@ const FgoodsDash = () => {
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
     const [queryRan, setqueryRan] = useState();
+    const [reqStatus, setreqStatus] = useState("");
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
@@ -31,20 +31,17 @@ const FgoodsDash = () => {
     const [hasData, sethasData] = useState(false);
     
     const search = async (query,queryParams,system) => {
-
+        
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system),
             'job_receive_status':()=> {
-                let splitParams = queryParams.job_id.split(',')
+                let splitParams = queryParams.job_id.trim().split(',')
                 return apiController.runQuery(query,splitParams,system)
             }
         }
 
         try {
-            console.log(query)
-            console.log(queryParams)
-            console.log(system)
             setqueryRan(query)
             setfetchedSystem(system)
             sethasData(false)
@@ -53,14 +50,21 @@ const FgoodsDash = () => {
             setinitialData(false)
             let custInv = null
             let result =  await params[query]()
-            console.log(result)
             setcustData(result.response);
-    
+            console.log(result.ok)
             if(result.response && result.response.length >0)
-            {sethasData(true);}
+            {
+                sethasData(true);
+            }
+            else if(!result.ok) {
+                setinitialData(false) 
+                setreqStatus(500) 
+            }
             else 
-            {setinitialData(false) }
-            
+            {
+                setinitialData(false) 
+                setreqStatus(404) 
+            }
             setbtnIsFetching(false)
             
         } catch (error) {
@@ -152,10 +156,10 @@ const FgoodsDash = () => {
                     </div>
                     :
                     // If its initial Data
-                    initialPage ?
+                    initialData ?
                     <InitialDataPage/>
                     :
-                    <NotFoundPage dataName={"Customer ID"} dataValue ={custId}/>
+                    <NotFoundPage status = {reqStatus} dataName={"Job ID"} dataValue ={custId}/>
                 }
 
         </div>
@@ -169,7 +173,7 @@ const FgoodsDash = () => {
                         </button>
                         {
                             showToast ?
-                                <div id="toast-bottom-right" className="fixed flex items-center w-full max-w-96 p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+                                <div id="toast-bottom-right" className="fixed flex items-center p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                                     <div className=" font-normal text-white">
                                         Excel successfully saved!
                                         <br/>
