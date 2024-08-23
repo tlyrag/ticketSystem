@@ -135,6 +135,23 @@ const runQuery = (query,params,system) => {
     .catch(err=> console.log(`Failed to run reorder notice ${err}`))
 }
 
+const runProc = (query,params,system) => {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+           {query:query,
+            params:params,
+            system:system
+           } 
+        )
+    };
+    return fetch(apiModel.runProc(), requestOptions)
+    .then(response =>response.json())
+    .then(data => {return data})
+    .catch(err=> console.log(`Failed to run reorder notice ${err}`))
+}
 export default {
     fetchAllTickets,
     addTicket,
@@ -147,5 +164,6 @@ export default {
     getMonarchInventory,
     generateExcelFile,
     reorderNotice,
-    runQuery
+    runQuery,
+    runProc
 }

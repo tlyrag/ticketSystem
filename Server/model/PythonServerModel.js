@@ -17,12 +17,15 @@ const reorderNotice =() => {
 const testServer = () =>{
     return `${getApiUrl()}/test`
 } 
-
+const runProc =() => {
+     return `${getApiUrl()}/runproc`
+}
 
 export default {
     getApiUrl,
     runQuery,
     testServer,
     generateExcel,
-    reorderNotice
+    reorderNotice,
+    runProc
 }

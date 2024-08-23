@@ -99,10 +99,40 @@ const runQuery =(query,params,system) => {
     
 }
 
+
+const runProc =(query,params,system) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify( {
+            query_name: query,
+            system:system,
+            params: params
+        })
+    };
+
+    return fetch(pythonModel.runProc(), requestOptions)
+    .then(response => {
+        if (!response.ok) { 
+            throw new Error(response.status.toString());
+        }
+        return response.json();
+    })
+    .then(data => {
+        return data;
+    })
+    .catch(err => {
+        console.error(`Failed to run query with status ${err.message}`);
+        return { error: true, statusCode: err.message };
+    });
+    
+}
+
 export default {
     runInventory,
     test,
     generateExcel,
     reorderNotice,
-    runQuery
+    runQuery,
+    runProc
 }

@@ -11,6 +11,8 @@ import NotFoundPage from "./DashComponents/NotFound";
 import ExtSellChart from "./Charts/InventoryCharts/ExtMonthLineChart"
 import PieChartInventoryByOwner from './Charts/InventoryCharts/InvOwnerPieChart';
 import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
+import ExtMonthLineChartJs from './Charts/InventoryCharts/ExtMonthLineChartJs';
+import InvOwnerDoughChartJs from './Charts/InventoryCharts/InvOnwerDoughChartJs';
 
 const Inventory = () => {
     /// Data //
@@ -29,7 +31,7 @@ const Inventory = () => {
     const [showToast, setshowToast] = useState(false);
     const [initialPage, setinitialPage] = useState(true);
     
-    
+    /// Generate Excel Function
     const generateExcel= async() => {
         setbtnIsSaving(true)
         let excelInfo = {
@@ -93,8 +95,10 @@ const Inventory = () => {
                 let iterator = 1
                 for (const getSource of inventorySources) {
                     const result = await getSource();
-
-
+                    
+                    console.log('Checking Source')
+                    console.log(getSource)
+                    
                     if (result && result.InvResult.length > 0) {
                         setcustData(result.InvResult);
                         sethasData(true);
@@ -103,11 +107,16 @@ const Inventory = () => {
                         calculateTotalQuantity(result.InvResult);
                         return;  
                     } 
-                    iterator++;
+                    
+                    console.log(`Checking ${iterator} from ${inventorySources.length}`)
                     if(iterator===inventorySources.length && result.InvResult.length==0) {
+                        console.log(`Failed for ${getSource}`)
+                        
                         sethasData(false)
                         setbtnIsFetching(false)
                     }
+                    iterator++;
+                    console.log(result)
 
                 }
               
@@ -121,7 +130,7 @@ const Inventory = () => {
 
         }
     };
-
+    ////////////////////////////////////// Calculating Data for Cards ///////////////////////////////////////////
     const calculateTotalQuantity =async(custData) => {
         let totalExtendedSell =0;
         let totalQtdOnHand = 0;
@@ -160,13 +169,26 @@ const Inventory = () => {
                             <SummaryCard title="Total Quantity On Hand" value={totalQtd} />
                             <SummaryCard title="Total Extended Sell" value={totalSell} />
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mt-5 shadow-lg ">
-                            <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell' />
-                            <PieChartInventoryByOwner data={custData}/>
-                        </div>
-                        <div className="flex flex-wrap justify-around w-full max-w-4xl mt-5 shadow-lg">
+                        <div className="grid grid-cols-2 gap-4 mt-5">
+                            <div className="col-span-1 shadow-lg"> 
+                                <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_title='Received Date' yAxis_title='Extended Sell' />
+                            </div>
+                            <div className="col-span-1 shadow-lg">
+                                <ExtMonthLineChartJs data={custData}/>
+                            </div>
+                            <div className="col-span-1 shadow-lg">
+                                <PieChartInventoryByOwner data={custData}/>
+                            </div>
+                            <div className="col-span-1 shadow-lg">
+                                <InvOwnerDoughChartJs data={custData}/> 
+                            </div>
+                            <div className="col-span-1 shadow-lg">
                             <JobMonthBarChart data={custData}/>
-                        </div>
+                            </div>
+                            <div className="col-span-1 shadow-lg">
+                            <JobMonthBarChart data={custData}/>
+                            </div>
+                         </div>
                         
                     </>
                     :
@@ -184,7 +206,7 @@ const Inventory = () => {
                     initialPage ?
                     <InitialDataPage/>
                     :
-                    <NotFoundPage dataName={"Customer ID"} dataValue ={custId}/>
+                    <NotFoundPage status = {404} dataName={"Customer ID"} dataValue ={custId}/>
                 }
 
         </div>
@@ -197,8 +219,8 @@ const Inventory = () => {
                             Generate Excel
                         </button>
                         {
-                            showToast ?
-                                <div id="toast-bottom-right" className="fixed flex items-center w-full max-w-96 p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+                            showToast ? 
+                                <div id="toast-bottom-right" className="fixed flex items-center p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                                     <div className=" font-normal text-white">
                                         Excel successfully saved!
                                         <br/>

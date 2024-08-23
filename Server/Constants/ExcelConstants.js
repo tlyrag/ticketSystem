@@ -5,10 +5,16 @@ const templateFilePath = {
         PS: "P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
         monarch:"P:\\Reports\\testing\\Templates\\InventoryPSTemplate.xlsx",
     },
-    job_receive_status: {
+    job_receive_status: 
+    {
         PS: "P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
         monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+    },
+    administration:
+    {
+        monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx"
     }
+    
 
 }
 const templatePath = (query,system) => {

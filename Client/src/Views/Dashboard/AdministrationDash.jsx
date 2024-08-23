@@ -1,27 +1,20 @@
+
 import React, { useDebugValue, useEffect, useState } from 'react';
 import DataTable from "./DashComponents/TableEx"
 import apiController from "../../Controller/apiController";
 import SummaryCard from './DashComponents/Cards';
-import DynamicFilters from './DashComponents/DynamicFilter';
-import InitialDataPage from "./DashComponents/InitialDataPage";
-import NotFoundPage from "./DashComponents/NotFound";
-// Charts
-import ExtSellChart from "./Charts/InventoryCharts/ExtMonthLineChart"
-import PieChartInventoryByOwner from './Charts/InventoryCharts/InvOwnerPieChart';
-import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
-
-const FgoodsDash = () => {
-
+import DynamicFilters from "./DashComponents/DynamicFilter";
+import InitialDataPage from './DashComponents/InitialDataPage';
+import NotFoundPage from './DashComponents/NotFound';
+const Administration = () => {
     /// Data //
-    const [custId, setcustId] = useState("");
-    const [outputPath, setoutputPath] = useState("");    
     const [custData, setcustData] = useState([]);
     const [fetchedSystem, setfetchedSystem] = useState();
     const [fetchedCompany, setfetchedCompany] = useState();
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
     const [queryRan, setqueryRan] = useState();
-    const [reqStatus, setreqStatus] = useState("");
+    const [outputPath, setoutputPath] = useState("");   
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
@@ -29,19 +22,44 @@ const FgoodsDash = () => {
     const [showToast, setshowToast] = useState(false);
     const [initialData, setinitialData] = useState(true);
     const [hasData, sethasData] = useState(false);
+    const [reqStatus, setreqStatus] = useState();
     
+    const generateExcel= async() => {
+        setbtnIsSaving(true)
+        let excelInfo = {
+            custData:custData,
+            system:fetchedSystem,
+            company:queryRan,
+            query:"administration"
+        }
+        console.log(excelInfo.company)
+        let excelresult = await apiController.generateExcelFile(excelInfo)
+        setoutputPath(excelresult.outputPath)
+        setbtnIsSaving(false);
+        setshowToast(true);
+        
+        setTimeout(() => {
+          setshowToast(false)
+        }, 15000);
+    }
+
+
+
+
     const search = async (query,queryParams,system) => {
         
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
-            'order':() =>apiController.runQuery(query,queryParams,system),
-            'job_receive_status':()=> {
-                let splitParams = queryParams.job_id.trim().split(',')
-                return apiController.runQuery(query,splitParams,system)
+            'inv_variance_summary':() =>apiController.runQuery(query,queryParams,system),
+            'inv_variance_detail':() =>apiController.runQuery(query,queryParams,system),
+            'usage':() =>{
+                let splitParams = queryParams.companyName.trim().split(',')
+                return apiController.runProc(query,splitParams,system)
             }
         }
 
         try {
+            
             setqueryRan(query)
             setfetchedSystem(system)
             sethasData(false)
@@ -51,11 +69,9 @@ const FgoodsDash = () => {
             let custInv = null
             let result =  await params[query]()
             setcustData(result.response);
-            console.log(result.ok)
+    
             if(result.response && result.response.length >0)
-            {
-                sethasData(true);
-            }
+            {sethasData(true);}
             else if(!result.ok) {
                 setinitialData(false) 
                 setreqStatus(500) 
@@ -65,6 +81,7 @@ const FgoodsDash = () => {
                 setinitialData(false) 
                 setreqStatus(404) 
             }
+            
             setbtnIsFetching(false)
             
         } catch (error) {
@@ -73,31 +90,11 @@ const FgoodsDash = () => {
         }
     };
 
-    
-    const generateExcel= async(query) => {
-        setbtnIsSaving(true)
-        let excelInfo = {
-            custData:custData,
-            system:fetchedSystem,
-            company:"",
-            query:query
-        }
-    console.log(excelInfo.company)
-      let excelresult = await apiController.generateExcelFile(excelInfo)
-      setoutputPath(excelresult.outputPath)
-      setbtnIsSaving(false);
-      setshowToast(true);
-      
-      setTimeout(() => {
-        setshowToast(false)
-      }, 15000);
-    }
-
 
     return (
         
         <div className="h-full bg-white drop-shadow-3xl m">
-            <DynamicFilters search={search} isFetching={isFetching} view='fgoods'/>
+            <DynamicFilters search={search} isFetching={isFetching} view='administration'/>
             <div className="flex flex-col items-center w-full p-4 ">
                 {
                     hasData ? 
@@ -161,15 +158,13 @@ const FgoodsDash = () => {
             : <></>}
 
             <div className="grid grid-cols-2 gap-4 mt-5">
-                {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
-                {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
-                 {/* {hasData ? <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_tittle='Received Date' yAxis_tittle ='Extended Sell'/> : <></>}  */}
             </div>
         </div>
     );
 };
 
-export default FgoodsDash;
+export default Administration;
+
 
 
 

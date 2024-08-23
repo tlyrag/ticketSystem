@@ -15,6 +15,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             className="border rounded p-2"
             value={selectedSeller}
             onChange={handleSellerDownChange}
+            id="seller"
         >
             {dropdownSellerOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -31,6 +32,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             className="border rounded p-2"
             value={selectedSystem}
             onChange={handleSystemDownChange}
+            id = "system"
         >
             {dropdownSystems.map(option => (
                 <option key={option.value} value={option.value}>
@@ -81,12 +83,18 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             {value:'',label:"Select Query"},
             { value: 'reorder', label: 'Reorder Notice' },
             { value: 'order', label: 'Client Back Order' },
+            { value: 'usage', label: 'Item Usage' },
         ],
         "fgoods":[
             {value:'',label:"Select Query"},
             { value: 'job_receive_status', label: 'Job Receive Status' },
             { value: 'warehouse_search', label: 'Warehouse Search' },
-        ]
+        ],
+        "administration":[
+            {value:'',label:"Select Query"},
+            { value: 'inv_variance_summary', label: 'Inventory Variance Summary' },
+            { value: 'inv_variance_detail', label: 'Inventory Variance Detail' },
+        ],
 
     };
 
@@ -99,12 +107,18 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         'sales':{
             '':[<></>],
             'reorder' :[<SalesDropDown/>,<SystemDropDown />,<StartDate/>,<EndDate/>],
-            'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
+            'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>],
+            'usage' :[<SystemDropDown/>]
         },
         'fgoods': {
             '':[<></>],
             'job_receive_status' :[<SystemDropDown/>],
             'warehouse_search' :[<SystemDropDown/>,<StartDate/>,<EndDate/>]
+        },
+        'administration': {
+            '':[<></>],
+            'inv_variance_summary' :[<SystemDropDown/>],
+            'inv_variance_detail' :[<SystemDropDown/>]
         }
 
     }
@@ -120,12 +134,30 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         },
         'job_receive_status':{
             'job_id':textData.trim()
-        }
+        },
+        'usage':{
+            "companyName":textData.trim()
+        },
+        'inv_variance_summary':{
+            "param":"empty"
+        },
+        'inv_variance_detail':""
+            
+        
     }
+    const textPlaceholder = {
+        "sales":{
+            "usage":"Enter Customer Number",
+        },
+        "fgoods":{
+            "job_receive_status":"Enter Job Number ex: 61234,65678,69878",
+            }
+        }
+    
+    
     //////////////////////////////////////////// Event Handlers/////////////////////////////////////////    
     const handleQueryDownChange = (e) => {
         setselectedQuery(e.target.value);
-
     };
     const handleSellerDownChange = (e) => {
         setselectedSeller(e.target.value);
@@ -158,6 +190,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                     className="border rounded p-2"
                     value={selectedQuery}
                     onChange={handleQueryDownChange}
+                    id="query"
                 >
                     {dropdownQueryOptions[view].map(option => (
                         <option key={option.value} value={option.value}>
@@ -171,14 +204,19 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 })
             }
             {
-                view==='fgoods' && selectedQuery==='job_receive_status'?         
+                //textField[view][selectedQuery][hasText] 
+                view == "fgoods" && selectedQuery == "job_receive_status" ||
+                view == "sales" && selectedQuery == "usage"
+                 ?         
                     <input
                         type="text"
-                        placeholder= "Enter Job Number ex: 61234,65678,69878"
+                        key={`${view}-${selectedQuery}`}
+                        placeholder= {textPlaceholder[view][selectedQuery]}
                         className="flex-1 p-2 border rounded"
                         value={textData}
                         onChange={handleTextChange}
                         onKeyDown={handleTextKeyDownChange}
+                        id= "dynamicText"
                     />  
                 :   <></>}
                 <button className={` ${isFetching ? "bg-white text-purple":"bg-purple text-white"}  font-bold py-2 px-4 border border-blue-700 rounded`} onClick={() => search(selectedQuery,queryParams[selectedQuery],selectedSystem)}>

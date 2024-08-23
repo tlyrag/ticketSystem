@@ -52,10 +52,15 @@ const Sales = () => {
         
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
-            'order':() =>apiController.runQuery(query,queryParams,system)
+            'order':() =>apiController.runQuery(query,queryParams,system),
+            'usage':() =>{
+                let splitParams = queryParams.companyName.trim().split(',')
+                return apiController.runProc(query,splitParams,system)
+            }
         }
 
         try {
+            
             setqueryRan(query)
             setfetchedSystem(system)
             sethasData(false)

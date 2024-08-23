@@ -4,6 +4,7 @@ import SqlController from '../controller/SqlServerController.js';
 import PythonServerController from '../controller/PythonServerController.js';
 import ExcelController from '../controller/ExcelController.js';
 import ExcelConstants from '../Constants/ExcelConstants.js';
+import { Query } from 'mongoose';
 
 
 
@@ -279,6 +280,36 @@ export default(app) => {
             ok:true,
             response:response
         })
+    })
+
+    app.post('/runproc',async(req,res)=> {
+        const system = req.body.system
+        const params = req.body.params
+        const query = req.body.query
+        console.log(`Running ${query}`)
+        try {
+        //const paramsArray = Object.values(params);
+        let response = await PythonServerController.runProc(query,params,system)
+ 
+        if (response.error) {
+           return res.status(500).json({
+                 ok:false,
+                 response:response
+             })
+
+        }
+        return res.status(200).json({
+            ok:true,
+            response:response
+        })
+        }
+        catch{
+            console.log(`Unable to run ${query} for ${system}`)
+            return res.status(500).json({
+                ok:false,
+                response:{"error":true,"statusCode":"500"}
+            })
+        }
     })
 
 }

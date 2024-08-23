@@ -1,12 +1,12 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import PltPieChart from '../TemplateCharts/PltPieChart';
+import chartDataController from '../../../../Controller/chartDataController';
+
+
+    
 const PieChartInventoryByOwner = (props) => {
-    // Aggregate data by OWNER_IND
-    const ownerInventory = props.data.reduce((acc, item) => {
-        acc[item.OWNER_IND] = (acc[item.OWNER_IND] || 0) + item['QTY ON HAND'];
-        return acc;
-    }, {});
+    let ownerInventory = chartDataController.aggregateById(props.data,"OWNER_IND","QTY ON HAND")
 
     let labels = Object.keys(ownerInventory)
     let values = Object.values(ownerInventory)

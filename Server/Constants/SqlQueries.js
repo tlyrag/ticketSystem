@@ -34,6 +34,10 @@ const custInventory = () => {
     	WHEN '9000001' THEN 'C'
     	ELSE ' ' 
     END AS OWNER_IND,
+	CASE POP
+	WHEN 'P' Then 'Print On Demand'
+	ELSE  'N'
+	END as is_print_on_demand,
     sum(QTY) AS QUANTITY_ON_ORDER,
     PAP.[QTY ON HAND],
     PAP.[COMMIT ON ORDER],
@@ -44,15 +48,18 @@ const custInventory = () => {
     PAP.[SELL PRICE] * sum(QTY) AS EXTENDED_SELL
 FROM 
     gams1.DBO.job j
-INNER JOIN 
+right JOIN 
     PrintStreamLive.dbo.PAPSIZE pap ON j.inventory_item_id = CONCAT('PS', pap.CODE)
-INNER JOIN 
+left JOIN 
 	PrintStreamLive.DBO.STKROLLS as RLS ON RLS.[PAPSIZE RECNUM]= pap.[DATAFLEX RECNUM ONE]
 	and RLS.MISJobNumber like concat(j.job_id,'%')
+inner join  PrintStreamLive.dbo.AR_Customer ar
+on ar.AR_CustomerID =pap.[CREDITOR RECNUM]
 
 WHERE
-    j.cust_id_bill_to = @companyid
-    AND PAP.[QTY ON HAND] > 0
+	AR_CustomerACNO =@companyid
+
+
 GROUP BY 
    PAP.CODE, 
     PAP.[INVENTORY CODE],
@@ -70,9 +77,13 @@ GROUP BY
     PAP.[REVISE DATE],
     PAP.[SELL PRICE],
 	PAP.[ACTIVITY CODE],
-	SUBSTRING(RLS.notes,0,2)
+	j.cust_id_bill_to,
+	SUBSTRING(RLS.notes,0,2),
+	[DEBTOR RECNUM],
+	[CREDITOR RECNUM],
+	ar.AR_CustomerACNO,
+	POP
 ORDER BY JOB_ID,[INVENTORY CODE]
-
 `
 }
 

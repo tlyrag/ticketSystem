@@ -1,30 +1,10 @@
 import PltLineChart from "../TemplateCharts/PltLineChart"
+import chartDataController from "../../../../Controller/chartDataController";
 import React, { useDebugValue, useEffect, useState } from 'react';
 const ExtendedSellChart = (props) => {
 
-    
-    const aggregateDataByMonth = (data) => {
-        const aggregate = {};
-    
-        data.forEach(item => {
-            const date = new Date(item.actual_received_date);
-            const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format as 'YYYY-M'
-    
-            if (!aggregate[monthKey]) {
-                aggregate[monthKey] = 0;
-            }
-            aggregate[monthKey] += parseFloat(item.EXTENDED_SELL) || 0;
-        });
-    
-        let aggregatedArray = Object.entries(aggregate).map(([date, sum]) => ({
-            date,
-            sum
-        }));
 
-        return aggregatedArray.sort((a, b) => a.date.localeCompare(b.date));
-    };
-
-    let ExtcharData =aggregateDataByMonth(props.data);
+    let ExtcharData =chartDataController.aggregateDataByMonth(props.data);
 
     return (
         

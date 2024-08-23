@@ -10,6 +10,7 @@ import Inventory from './Views/Dashboard/InventoryDash'
 import Sales from './Views/Dashboard/SalesDash';
 import DashBoardMain from './Views/Dashboard/DashBoardMain';
 import FgoodsDash from './Views/Dashboard/FgoodsDash';
+import Administration from './Views/Dashboard/AdministrationDash';
 
 /// to be replaced once login is created
 const loggedUser = {
@@ -135,6 +136,7 @@ function App() {
             <Route path="/new-ticket" element={<NewTicket fetchTicket= {fetchTicket} user={user}/>} />
             <Route path="/inventory" element={<Inventory  user={user}/>} />
             <Route path="/sales" element={<Sales  user={user}/>} />
+            <Route path="/administration" element={<Administration  user={user}/>} />
             <Route path="/fgoods" element={<FgoodsDash  user={user}/>} />
             <Route path="/dashboard" element={<DashBoardMain  user={user}/>} />
           </Routes>
