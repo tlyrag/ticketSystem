@@ -3,7 +3,8 @@ import chartDataController from "../../../../Controller/chartDataController";
 
 const ExtMonthLineChartJs = (props) => {
 
-    let data = chartDataController.aggregateDataByMonth(props.data);
+    //let data = chartDataController.aggregateDataByMonth(props.data,"actual_received_date","EXTENDED_SELL");
+    let data = chartDataController.aggregateDataByMonth(props.data,"date_received","subtotal");
     let newData= chartDataController.generateDataAndLabels(data,"sum","date")
    
     

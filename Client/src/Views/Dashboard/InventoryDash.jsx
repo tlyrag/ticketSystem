@@ -13,6 +13,7 @@ import PieChartInventoryByOwner from './Charts/InventoryCharts/InvOwnerPieChart'
 import JobMonthBarChart from './Charts/InventoryCharts/JobMonthBarChart';
 import ExtMonthLineChartJs from './Charts/InventoryCharts/ExtMonthLineChartJs';
 import InvOwnerDoughChartJs from './Charts/InventoryCharts/InvOnwerDoughChartJs';
+import JobBarChart from './Charts/InventoryCharts/JobMonthBarChartJS';
 
 const Inventory = () => {
     /// Data //
@@ -140,18 +141,22 @@ const Inventory = () => {
         });
 
         custData.forEach(data => {
-            totalExtendedSell += data.EXTENDED_SELL;
+            //totalExtendedSell += data.EXTENDED_SELL;
+            totalExtendedSell += data.subtotal;
             //From Quantum
-            if(data.QUANTITY_ON_ORDER
+            if(data.qty
             ) {
-                totalQtdOnHand += data.QUANTITY_ON_ORDER
+                //totalQtdOnHand += data.QUANTITY_ON_ORDER
+                totalQtdOnHand += data.qty
+
             } 
             //From Monarch
             else {
-                totalQtdOnHand += data["QTY ON HAND"] 
+                totalQtdOnHand += data["qty"] 
+                //totalQtdOnHand += data["QUANTITY_ON_ORDER"] 
             }
             settotalSell( `${( USDollar.format(Math.round(totalExtendedSell * 100) / 100))}`);
-            settotalQtd(totalQtdOnHand);
+            settotalQtd(totalQtdOnHand.toLocaleString());
         });
         
     }
@@ -169,27 +174,32 @@ const Inventory = () => {
                             <SummaryCard title="Total Quantity On Hand" value={totalQtd} />
                             <SummaryCard title="Total Extended Sell" value={totalSell} />
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mt-5">
+                        <div className="grid grid-cols-10 gap-4 mt-5 flex flex-wrap w-full  shadow-lg">
+                        <div className="col-span-3">
+                                <InvOwnerDoughChartJs data={custData}/> 
+                            </div>
+                            <div className="col-span-6">
+                                <ExtMonthLineChartJs data={custData}/>
+                            </div>
+                        <div className="col-span-10">
+                            <JobBarChart data={custData}/>
+                        </div>
+                         </div>
+
+                         {/* OLD CHARTS 
+                                                     <div className="col-span-1 shadow-lg">
+                                <PieChartInventoryByOwner data={custData}/>
+                            </div>
                             <div className="col-span-1 shadow-lg"> 
                                 <ExtSellChart data={custData} chart_title='Extended Sell Over Time' xAxis_title='Received Date' yAxis_title='Extended Sell' />
                             </div>
                             <div className="col-span-1 shadow-lg">
-                                <ExtMonthLineChartJs data={custData}/>
-                            </div>
-                            <div className="col-span-1 shadow-lg">
                                 <PieChartInventoryByOwner data={custData}/>
                             </div>
-                            <div className="col-span-1 shadow-lg">
-                                <InvOwnerDoughChartJs data={custData}/> 
-                            </div>
-                            <div className="col-span-1 shadow-lg">
+                         <div className="col-span-1 shadow-lg">
                             <JobMonthBarChart data={custData}/>
-                            </div>
-                            <div className="col-span-1 shadow-lg">
-                            <JobMonthBarChart data={custData}/>
-                            </div>
-                         </div>
-                        
+                            </div> 
+                        */}
                     </>
                     :
                     // If is Loading this is being Rendered

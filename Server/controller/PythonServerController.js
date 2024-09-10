@@ -33,7 +33,6 @@ const generateExcel =(custData,inputPath,outputPath) => {
 
     return fetch(pythonModel.generateExcel(),requestOptions).then(response=>response.json())
     .then(data=> {
-        console.log(data)
         return data
     })
     .catch(err=> console.log(`Failed to run query ${err}`))
@@ -122,7 +121,7 @@ const runProc =(query,params,system) => {
         return data;
     })
     .catch(err => {
-        console.error(`Failed to run query with status ${err.message}`);
+        console.error(`Failed to run query ${query} on ${system}, params:${params}. Error: ${err.message}`);
         return { error: true, statusCode: err.message };
     });
     

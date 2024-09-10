@@ -49,13 +49,12 @@ const Administration = () => {
     const search = async (query,queryParams,system) => {
         
         const params = {
-            'reorder': () => apiController.reorderNotice(queryParams,system),
             'inv_variance_summary':() =>apiController.runQuery(query,queryParams,system),
             'inv_variance_detail':() =>apiController.runQuery(query,queryParams,system),
-            'usage':() =>{
-                let splitParams = queryParams.companyName.trim().split(',')
-                return apiController.runProc(query,splitParams,system)
-            }
+            "inv_variance_detail_no_subjobs":() =>apiController.runQuery(query,queryParams,system),
+            "pick_variance":() =>apiController.runQuery(query,queryParams,system),
+            "compare_inv_balance":() =>apiController.runQuery(query,queryParams,system),
+            "compare_inv_balance_view":() =>apiController.runQuery(query,queryParams,system),
         }
 
         try {
@@ -127,7 +126,7 @@ const Administration = () => {
                     initialData ?
                     <InitialDataPage/>
                     :
-                    <NotFoundPage status = {reqStatus} dataName={"Job ID"} dataValue ={custId}/>
+                    <NotFoundPage status = {reqStatus} dataName={""} dataValue ={""}/>
                 }
 
         </div>

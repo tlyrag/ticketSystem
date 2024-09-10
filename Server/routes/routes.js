@@ -240,7 +240,9 @@ export default(app) => {
 
         let inputPath = ExcelConstants.templatePath(query,system)
         let outputPath = ExcelConstants.outputPath(query,`${company}_${query}_${today}`)
-
+        //console.log(custData)
+        console.log(query,system)
+        //console.log(outputPath)
         let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
         res.status(200).json({
             ok: true,
@@ -290,8 +292,7 @@ export default(app) => {
         try {
         //const paramsArray = Object.values(params);
         let response = await PythonServerController.runProc(query,params,system)
- 
-        if (response.error) {
+       if (response.error) {
            return res.status(500).json({
                  ok:false,
                  response:response

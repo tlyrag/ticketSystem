@@ -1,14 +1,19 @@
-const aggregateDataByMonth = (data) => {
+const aggregateDataByMonth = (data, dateParam, id) => {
     const aggregate = {};
 
     data.forEach(item => {
-        const date = new Date(item.actual_received_date);
-        const monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`; // Format as 'YYYY-MM'
-
-        if (!aggregate[monthKey]) {
-            aggregate[monthKey] = 0;
+        if (item[dateParam]) { // Ensure the date parameter is present
+            const date = new Date(item[dateParam]);
+            if (!isNaN(date.getTime())) { // Check if the date is valid
+                const monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`; // Format as 'YYYY-MM'
+    
+                if (!aggregate[monthKey]) {
+                    aggregate[monthKey] = 0;
+                }
+                // Add value from the specified ID, ensuring it's a number
+                aggregate[monthKey] += parseFloat(item[id]) || 0;
+            }
         }
-        aggregate[monthKey] += parseFloat(item.EXTENDED_SELL) || 0;
     });
 
     let aggregatedArray = Object.entries(aggregate).map(([date, sum]) => ({
@@ -16,10 +21,11 @@ const aggregateDataByMonth = (data) => {
         sum
     }));
     
+    // Sort the final data array based on the date strings
     let finalData = aggregatedArray.sort((a, b) => a.date.localeCompare(b.date));
     return finalData;
-
 };
+
 
 const generateDataAndLabels = (data,newDatakey,labelKey) => {
     let newData = []
@@ -45,9 +51,12 @@ const aggregateById = (data,label,id) => {
     return ownerInventory
 }
 
+
+
 export default{
     aggregateDataByMonth,
     generateDataAndLabels,
-    aggregateById
+    aggregateById,
+    
 
 }

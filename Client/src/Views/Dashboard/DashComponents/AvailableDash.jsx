@@ -5,11 +5,32 @@ const ReportsTable = () => {
     const heads = ["name","description","location","system","outputFolder"]
     const reports = [
         {
+            name: "Inventory Variance Summary",
+            description: "Provides the Summary Variance on the Inventory Items Between Monarch and PrintStream",
+            location: "Dashboard > Administration Tab",
+            system:"Monarch/PrintStream",
+            outputFolder:"P:\\Reports\\testing\\Outputs\\Administration"
+        },
+        {
+            name: "Inventory Variance Detail",
+            description: "Provides the Detail Variance on the Inventory Items Between Monarch and PrintStream",
+            location: "Dashboard > Administration Tab",
+            system:"Monarch/PrintStream",
+            outputFolder:"P:\\Reports\\testing\\Outputs\\Administration"
+        },
+        {
             name: "Inventory",
             description: "Provides the Inventory report showing the jobs and quantity on hands by item",
             location: "Dashboard > Inventory Tab",
             system:"Quantum and Monarch/PrintStream",
-            outputFolder:"P:\\Reports\\testing\\Outputs\\Inventoy"
+            outputFolder:"P:\\Reports\\testing\\Outputs\\Inventory"
+        },
+        {
+            name: "Inventory",
+            description: "Provides the Inventory report showing the jobs and quantity on hands by item",
+            location: "Dashboard > Inventory Tab",
+            system:"Quantum and Monarch/PrintStream",
+            outputFolder:"P:\\Reports\\testing\\Outputs\\Inventory"
         },
         {
             name: "Reorder Notice",

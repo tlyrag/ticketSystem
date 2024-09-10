@@ -38,10 +38,15 @@ const FgoodsDash = () => {
             'job_receive_status':()=> {
                 let splitParams = queryParams.job_id.trim().split(',')
                 return apiController.runQuery(query,splitParams,system)
-            }
+            },
+            'ps_quantum_check': () => {
+                let splitParams = queryParams.item_id.trim().split(',')
+                return apiController.runProc(query,splitParams,system)
+            } 
         }
 
         try {
+
             setqueryRan(query)
             setfetchedSystem(system)
             sethasData(false)
@@ -51,7 +56,7 @@ const FgoodsDash = () => {
             let custInv = null
             let result =  await params[query]()
             setcustData(result.response);
-            console.log(result.ok)
+            
             if(result.response && result.response.length >0)
             {
                 sethasData(true);
@@ -75,22 +80,27 @@ const FgoodsDash = () => {
 
     
     const generateExcel= async(query) => {
-        setbtnIsSaving(true)
-        let excelInfo = {
-            custData:custData,
-            system:fetchedSystem,
-            company:"",
-            query:query
+        try {    
+            console.log(custData)
+            setbtnIsSaving(true)
+            let excelInfo = {
+                custData:custData,
+                system:fetchedSystem,
+                company:"",
+                query:query
+            }
+            console.log(excelInfo)
+            let excelresult = await apiController.generateExcelFile(excelInfo)
+            setoutputPath(excelresult.outputPath)
+            setbtnIsSaving(false);
+            setshowToast(true);
+            
+            setTimeout(() => {
+                setshowToast(false)
+            }, 15000);
+        } catch(error) {
+            console.log(`Failed to generate excel file ${error}`)
         }
-    console.log(excelInfo.company)
-      let excelresult = await apiController.generateExcelFile(excelInfo)
-      setoutputPath(excelresult.outputPath)
-      setbtnIsSaving(false);
-      setshowToast(true);
-      
-      setTimeout(() => {
-        setshowToast(false)
-      }, 15000);
     }
 
 

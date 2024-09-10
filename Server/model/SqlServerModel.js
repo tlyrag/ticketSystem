@@ -44,6 +44,7 @@ const  getPurchaseOrders = async  (companyId) => {
         let pool = await dbConnect();
         let request = await pool.request()
         request.input('companyId',mssql.VarChar,companyId)
+        request.timeout = 120000;
         let inv = await request.query(SqlQueries.custInventory())
         .catch( err => {
             console.log(`SlQSeverModel Error : Failed to run inventory Query ${err}`)

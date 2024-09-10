@@ -13,6 +13,10 @@ const templateFilePath = {
     administration:
     {
         monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx"
+    },
+    ps_quantum_check: {
+        qm1:"P:\\Reports\\testing\\Templates\\PsQuantumCheckTemplate.xlsx",
+        qm2:"P:\\Reports\\testing\\Templates\\PsQuantumCheckTemplate.xlsx"
     }
     
 

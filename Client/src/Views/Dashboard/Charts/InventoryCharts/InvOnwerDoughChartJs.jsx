@@ -1,7 +1,8 @@
 import CjDoughnutChart from "../TemplateCharts/CjDoughnutChart"
 import chartDataController from "../../../../Controller/chartDataController"
 const InvOwnerDoughChartJs = (props) => {
-    let ownerInventory = chartDataController.aggregateById(props.data,"OWNER_IND","QTY ON HAND")
+    //let ownerInventory = chartDataController.aggregateById(props.data,"OWNER_IND","QUANTITY_ON_ORDER")
+    let ownerInventory = chartDataController.aggregateById(props.data,"OWNER_IND","qty")
 
     let labels = Object.keys(ownerInventory)
     let values = Object.values(ownerInventory)
