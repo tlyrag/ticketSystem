@@ -7,31 +7,31 @@
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "507c3507",
+      "fileHash": "f7e73f1e",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "bb5aa4e4",
+      "fileHash": "c8d594d2",
       "needsInterop": true
     },
     "react-router-dom": {
       "src": "../../node_modules/react-router-dom/dist/index.js",
       "file": "react-router-dom.js",
-      "fileHash": "ba5b8d0f",
+      "fileHash": "462272a6",
       "needsInterop": false
     },
     "react-plotly.js": {
       "src": "../../node_modules/react-plotly.js/react-plotly.js",
       "file": "react-plotly__js.js",
-      "fileHash": "414a3e6d",
+      "fileHash": "f18cd793",
       "needsInterop": true
     },
     "chart.js/auto": {
       "src": "../../node_modules/chart.js/auto/auto.js",
       "file": "chart__js_auto.js",
-      "fileHash": "1b17eac8",
+      "fileHash": "2d26fb0a",
       "needsInterop": false
     }
   },
