@@ -140,7 +140,7 @@ const Sales = () => {
             : <></>}
 
             <div className="grid grid-cols-2 gap-4 mt-5">
-                {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
+                {/* {hasData ? <BarChart custData={custData}/> : <>No Data</> a}
                 {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
             </div>
 
