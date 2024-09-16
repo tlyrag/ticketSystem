@@ -50,6 +50,32 @@ const aggregateById = (data,label,id) => {
     }, {});
     return ownerInventory
 }
+const aggregateDataByParams = (param1,param2) => {
+
+        const result = data.reduce((acc, item) => {
+            if (acc[item[param1]]) {
+                acc[item[param1]][param2] += item[pram2];
+            } else {
+                acc[item[param1]] = { ...item }; // Spread operator to copy properties
+            }
+            return acc;
+        }, {});
+    
+        
+        // Convert object to array of items and array of quantities
+        const params1 = [];
+        const params2 = [];
+    
+        Object.values(result).forEach(item => {
+            params1.push(item[param1]);
+            params2.push(item[param2]);
+        });
+    
+        return { params1, params2 };
+};
+    
+
+
 
 
 
@@ -57,6 +83,7 @@ export default{
     aggregateDataByMonth,
     generateDataAndLabels,
     aggregateById,
+    aggregateDataByParams
     
 
 }
