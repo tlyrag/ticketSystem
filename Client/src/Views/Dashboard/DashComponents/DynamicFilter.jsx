@@ -234,7 +234,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         <div className="p-4 bg-purple">
             <div className="flex gap-4">
             <select
-                    className="border rounded p-2"
+                    className="border rounded p-2 flex"
                     value={selectedQuery}
                     onChange={handleQueryDownChange}
                     id="query"

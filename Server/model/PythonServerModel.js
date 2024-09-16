@@ -20,6 +20,9 @@ const testServer = () =>{
 const runProc =() => {
      return `${getApiUrl()}/runproc`
 }
+const genPdf =() => {
+    return `${getApiUrl()}/genPdf`
+}
 
 export default {
     getApiUrl,
@@ -27,5 +30,6 @@ export default {
     testServer,
     generateExcel,
     reorderNotice,
-    runProc
+    runProc,
+    genPdf
 }

@@ -126,12 +126,39 @@ const runProc =(query,params,system) => {
     });
     
 }
+const genPdf =(custData,params) => {
+    console.log(custData[0]['LAST_PO_DATE'])
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify( {
+            custData: custData,
+            params: params
+        })
+    };
 
+    return fetch(pythonModel.genPdf(), requestOptions)
+    .then(response => {
+        if (!response.ok) { 
+            throw new Error(response.status.toString());
+        }
+        return response.json();
+    })
+    .then(data => {
+        return data;
+    })
+    .catch(err => {
+        console.error(`Failed to run query ${params.query_name} on ${params.system}. Error: ${err.message}`);
+        return { error: true, statusCode: err.message };
+    });
+    
+}
 export default {
     runInventory,
     test,
     generateExcel,
     reorderNotice,
     runQuery,
-    runProc
+    runProc,
+    genPdf
 }

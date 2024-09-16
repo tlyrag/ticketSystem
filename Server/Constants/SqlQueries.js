@@ -109,6 +109,7 @@ Last_release AS (
 )
 
 SELECT 
+	ROW_NUMBER() OVER(ORDER BY inv.item_id) AS i,
 	item_id,
 	Item_Description,
 	date_received,

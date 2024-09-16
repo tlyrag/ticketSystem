@@ -23,15 +23,13 @@ const Sales = () => {
     const [hasData, sethasData] = useState(false);
     const [reqStatus, setreqStatus] = useState();
     
-    const generateExcel= async() => {
+    const generatePDF= async() => {
         setbtnIsSaving(true)
-        let excelInfo = {
-            custData:custData,
+        let pdfInfo = {
             system:fetchedSystem,
-            company:fetchedCompany,
-            query:"inventory"
+            query_name:queryRan
         }
-      await apiController.generateExcelFile(excelInfo)
+      await apiController.genpdf(custData,pdfInfo)
       setbtnIsSaving(false);
       setshowToast(true);
       
@@ -127,8 +125,17 @@ const Sales = () => {
              hasData ? 
                 <>
                     <DataTable custData={custData} /> 
-                    <div className="flex items-center justify-center h-16">
-                    </div>
+                    {
+                    queryRan == 'reorder' ?
+                        <div className="flex items-center justify-center h-16">
+                            <button className= {`font-bold py-2 px-4 border border-blue-700 rounded ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"} `} onClick={()=> generatePDF()}>
+                                Generate PDF
+                            </button> 
+                        </div>
+                    : 
+                        <></>
+                    }
+
                 </>
             : <></>}
 
@@ -136,6 +143,8 @@ const Sales = () => {
                 {/* {hasData ? <BarChart custData={custData}/> : <>No Data</>}
                 {hasData ? <PltBarChart custData={custData}/> :<>No Data</>} */}
             </div>
+
+
         </div>
     );
 };

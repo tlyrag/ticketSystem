@@ -46,6 +46,9 @@ const runQuery = () => {
 const runProc = () => {
     return `${getApiUrl()}/runproc` 
 }
+const genpdf = () => {
+    return `${getApiUrl()}/genpdf` 
+}
 export default {
     getApiUrl,
     tickets,
@@ -60,6 +63,7 @@ export default {
     generateExcel,
     reorderNotice,
     runQuery,
-    runProc
+    runProc,
+    genpdf
 
 }

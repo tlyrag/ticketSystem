@@ -264,6 +264,28 @@ export default(app) => {
         })
     })
 
+    app.post('/genpdf',async(req,res)=> {
+        try{
+           
+            const custData = req.body.custData
+            const filterData = req.body.filter
+            console.log(filterData)
+            let response = await PythonServerController.genPdf(custData,filterData)
+
+            res.status(200).json({
+                ok:true,
+                response:response
+            })
+        }
+        catch(err) {
+            console.log(`Failed to generate PDF ${err}`)
+            res.status(500).json({
+                ok:false,
+                response:err
+            })
+        }
+    })
+
     app.post('/runQuery',async(req,res)=> {
         const system = req.body.system
         const params = req.body.params

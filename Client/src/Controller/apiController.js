@@ -152,6 +152,26 @@ const runProc = (query,params,system) => {
     .then(data => {return data})
     .catch(err=> console.log(`Failed to run reorder notice ${err}`))
 }
+
+const genpdf = (custData,filter) => {
+    console.log(custData)
+    console.log(filter)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+           {
+            custData:custData,
+            filter:filter,
+           } 
+        )
+    };
+    return fetch(apiModel.genpdf(), requestOptions)
+    .then(response =>response.json())
+    .then(data => {return data})
+    .catch(err=> console.log(`Failed to run genPdf notice ${err}`))
+}
+
 export default {
     fetchAllTickets,
     addTicket,
@@ -165,5 +185,6 @@ export default {
     generateExcelFile,
     reorderNotice,
     runQuery,
-    runProc
+    runProc,
+    genpdf
 }
