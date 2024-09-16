@@ -1,8 +1,49 @@
 {
-  "hash": "0293ae29",
+  "hash": "f8fcf03f",
   "configHash": "3c25e40a",
-  "lockfileHash": "e3b0c442",
-  "browserHash": "a37956a1",
-  "optimized": {},
-  "chunks": {}
+  "lockfileHash": "82c6e835",
+  "browserHash": "a1a6d9b4",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "5aab4292",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "cbf6cea9",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "abe425cc",
+      "needsInterop": false
+    },
+    "react-plotly.js": {
+      "src": "../../node_modules/react-plotly.js/react-plotly.js",
+      "file": "react-plotly__js.js",
+      "fileHash": "27d68fd8",
+      "needsInterop": true
+    },
+    "chart.js/auto": {
+      "src": "../../node_modules/chart.js/auto/auto.js",
+      "file": "chart__js_auto.js",
+      "fileHash": "0dc793e3",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-5IFATXZH": {
+      "file": "chunk-5IFATXZH.js"
+    },
+    "chunk-URNRBCZE": {
+      "file": "chunk-URNRBCZE.js"
+    },
+    "chunk-LNEMQRCO": {
+      "file": "chunk-LNEMQRCO.js"
+    }
+  }
 }
