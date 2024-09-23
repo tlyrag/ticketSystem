@@ -10,6 +10,11 @@ const templateFilePath = {
         PS: "P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
         monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
     },
+    ps_item_cust: 
+    {
+        PS: "P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+        monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+    },
     administration:
     {
         monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx"
@@ -17,6 +22,9 @@ const templateFilePath = {
     ps_quantum_check: {
         qm1:"P:\\Reports\\testing\\Templates\\PsQuantumCheckTemplate.xlsx",
         qm2:"P:\\Reports\\testing\\Templates\\PsQuantumCheckTemplate.xlsx"
+    },
+    ps_item_usage_by_location: {
+        monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
     }
     
 

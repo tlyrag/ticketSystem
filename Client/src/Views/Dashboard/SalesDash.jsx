@@ -14,6 +14,7 @@ const Sales = () => {
     const [totalSell, settotalSell] = useState();
     const [totalQtd, settotalQtd] = useState();
     const [queryRan, setqueryRan] = useState();
+    const [outputPath, setoutputPath] = useState("");    
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
@@ -38,6 +39,30 @@ const Sales = () => {
       }, 2000);
     }
 
+    const generateExcel= async(query) => {
+        try {    
+            console.log(custData)
+            setbtnIsSaving(true)
+            let excelInfo = {
+                custData:custData,
+                system:fetchedSystem,
+                company:"",
+                query:queryRan
+            }
+            console.log(excelInfo)
+            let excelresult = await apiController.generateExcelFile(excelInfo)
+            setoutputPath(excelresult.outputPath)
+            setbtnIsSaving(false);
+            setshowToast(true);
+            
+            setTimeout(() => {
+                setshowToast(false)
+            }, 15000);
+        } catch(error) {
+            console.log(`Failed to generate excel file ${error}`)
+        }
+    }
+
     /**
      * Fetches data from Web server and returns the customer information based on the Inventory Query
      * @param {*} custId  Customer ID inside Monarc or Quantum, input comes from the user textBox in the filter
@@ -47,7 +72,9 @@ const Sales = () => {
 
     
     const salesSearch = async (query,queryParams,system) => {
-        
+        // console.log(query)
+        // console.log(queryParams)
+        // console.log(system)
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system),
@@ -55,6 +82,10 @@ const Sales = () => {
             'usage':() =>{
                 let splitParams = queryParams.companyName.trim().split(',')
                 return apiController.runProc(query,splitParams,system)
+            },
+            'ps_item_usage_by_location': () => {
+                let splitParams = queryParams.itemId.trim().split(',')
+                return apiController.runQuery(query,splitParams,system)
             }
         }
 
@@ -85,8 +116,12 @@ const Sales = () => {
             setbtnIsFetching(false)
             
         } catch (error) {
-            console.error("Failed to fetch inventory:", error);
-
+            console.error(`Failed to run query: ${query} Error: ${error}`);
+            //sethasData(true)
+            //setinitialData(false) 
+            setbtnIsFetching(false)
+            setreqStatus(500) 
+            
         }
     };
 
@@ -142,7 +177,31 @@ const Sales = () => {
                         </div>
                     :
                     <></>
-                }
+                    }
+                    {
+                    queryRan == 'ps_item_usage_by_location' ?
+                        <div className="flex items-center justify-center h-16">
+                            <button className= {`font-bold py-2 px-4 border border-blue-700 rounded ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"} `} onClick={()=> generateExcel()}>
+                                Generate Excel
+                            </button> 
+
+                            {
+                            showToast ?
+                                <div id="toast-bottom-right" className="fixed flex items-center p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+                                    <div className=" font-normal text-white">
+                                        Excel successfully saved!
+                                        <br/>
+                                        {/* <a href= {`erase  ${outputPath}`} target="_blank">Download</a> */}
+                                        {outputPath}
+                                    </div>
+                                </div>
+                            :
+                                <></>
+                        }
+                        </div>
+                    : 
+                        <></>
+                    }
                 </>
             : <></>}
 

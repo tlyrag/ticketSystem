@@ -46,7 +46,9 @@ const custInventory =() => {
 		sum(QTY) AS qty,
 		CONCAT(PAP.[UNIT OF ISSUE],'/',PAP.[UNIT ISSUE DESC] ) as unit_qty,
 		PAP.[SELL PRICE] AS 'unit_sell',
-		ROUND(PAP.[SELL PRICE] * sum(QTY),2) AS subtotal
+		ROUND(PAP.[SELL PRICE] * sum(QTY),2) AS subtotal,
+		pap.[MIN LEVEL] as minimum_level,
+		pap.[REORDER QTY] as reorder_quantity
 	FROM 
 	-- Was right left changed to inner inner
 		gams1.DBO.job j
@@ -92,6 +94,8 @@ const custInventory =() => {
 		POP,
 		rls.location,
 		pap.[LAST ORDER DATE],
+		pap.[MIN LEVEL],
+		pap.[REORDER QTY],
 		ACTIVE -- if y not obsolete
 	--ORDER BY PAP.[QTY ON HAND] DESC,[INVENTORY CODE]
 ),
@@ -120,6 +124,8 @@ SELECT
 	Obsolete,
 	unit_qty,
 	qty,
+	minimum_level,
+	reorder_quantity,
 	unit_sell,
 	subtotal,
 	last_release_date

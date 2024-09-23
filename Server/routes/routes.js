@@ -225,30 +225,39 @@ export default(app) => {
     });
 
     app.post('/generateExcelFile',async(req,res) => {
-        const system = req.body.system
-        const custData = req.body.custData
-        const company = req.body.company
-        const query = req.body.query
+        try {
+            const system = req.body.system
+            const custData = req.body.custData
+            const company = req.body.company
+            const query = req.body.query
 
-        let date = new Date()
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-        const day = date.getDate().toString().padStart(2, '0');
-        const hour = date.getHours().toString().padStart(2, '0');
-        const minute = date.getMinutes().toString().padStart(2, '0');
-        let today = `${year}_${month}_${day}_${hour}_${minute}`;
+            let date = new Date()
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+            const day = date.getDate().toString().padStart(2, '0');
+            const hour = date.getHours().toString().padStart(2, '0');
+            const minute = date.getMinutes().toString().padStart(2, '0');
+            let today = `${year}_${month}_${day}_${hour}_${minute}`;
 
-        let inputPath = ExcelConstants.templatePath(query,system)
-        let outputPath = ExcelConstants.outputPath(query,`${company}_${query}_${today}`)
-        //console.log(custData)
-        console.log(query,system)
-        //console.log(outputPath)
-        let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
-        res.status(200).json({
-            ok: true,
-            outputPath:outputPath,
-            response:response
-        });
+            let inputPath = ExcelConstants.templatePath(query,system)
+            let outputPath = ExcelConstants.outputPath(query,`${company}_${query}_${today}`)
+            //console.log(custData)
+            console.log(query,system)
+            //console.log(outputPath)
+            let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
+            res.status(200).json({
+                ok: true,
+                outputPath:outputPath,
+                response:response
+            });
+        }
+        catch (error) {
+            console.log(`Failed to generate Excel ${error}`)
+            res.status(500).json({
+                ok: false,
+                error:error
+            });
+        }
     })
     
     app.post('/reorderNotice',async(req,res)=> {

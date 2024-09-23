@@ -35,6 +35,7 @@ const FgoodsDash = () => {
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system),
+            'ps_item_cust':() =>apiController.runQuery(query,queryParams,system),
             'job_receive_status':()=> {
                 let splitParams = queryParams.job_id.trim().split(',')
                 return apiController.runQuery(query,splitParams,system)

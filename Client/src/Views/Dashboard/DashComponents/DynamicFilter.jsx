@@ -105,12 +105,14 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             { value: 'order', label: 'Client Back Order' },
             { value: 'usage', label: 'Item Usage' },
             { value: 'summary_inv', label: 'Customer Summary Inventory' },
+            { value: 'ps_item_usage_by_location', label: 'Item Usage by location'}
         ],
         "fgoods":[
             {value:'',label:"Select Query"},
             { value: 'job_receive_status', label: 'Job Receive Status' },
             { value: 'warehouse_search', label: 'Warehouse Search' },
             { value: 'ps_quantum_check', label: 'ItemID - PrintStream vs Quantum' },
+            { value: 'ps_item_cust', label: 'PS items by customer' },
         ],
         "administration":[
             {value:'',label:"Select Query"},
@@ -135,11 +137,13 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'reorder' :[<SalesDropDown/>,<SystemDropDown />,<StartDate/>,<EndDate/>],
             'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>],
             'usage' :[<SystemDropDown/>],
-            'summary_inv' :[<SystemDropDown/>]
+            'summary_inv' :[<SystemDropDown/>],
+            'ps_item_usage_by_location':[<SystemDropDown/>]
         },
         'fgoods': {
             '':[<></>],
             'job_receive_status' :[<SystemDropDown/>],
+            'ps_item_cust':[<SystemDropDown/>],
             'warehouse_search' :[<SystemDropDown/>,<StartDate/>,<EndDate/>],
             'ps_quantum_check':[<SystemDropDown custom={true} systems={[    
                 {value:'',label:"Select System"},
@@ -185,7 +189,13 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         "inv_variance_detail_no_subjobs":"",
         "pick_variance":"",
         "compare_inv_balance":"",
-        "compare_inv_balance_view":""
+        "compare_inv_balance_view":"",
+        "ps_item_cust":{
+            "companyName":textData.trim()
+        },
+        'ps_item_usage_by_location' :{
+            "itemId" : textData.trim()
+        }
         
             
         
@@ -194,10 +204,12 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         "sales":{
             "usage":"Enter Item ID",
             "summary_inv":"Enter Company Code",
+            "ps_item_usage_by_location":"Enter Item ID"
         },
         "fgoods":{
             "job_receive_status":"Enter Job Number ex: 61234,65678,69878",
-            "ps_quantum_check":"Enter item id"
+            "ps_quantum_check":"Enter item id",
+            "ps_item_cust":"Enter Customer ID"
             }
         }
     
@@ -255,8 +267,10 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 
                 view == "sales" && selectedQuery == "usage"||
                 view == "sales" && selectedQuery == "summary_inv"||
+                view == "sales" && selectedQuery == "ps_item_usage_by_location"||
                 view == "fgoods" && selectedQuery == "job_receive_status" ||
-                view =='fgoods'&& selectedQuery == 'ps_quantum_check'
+                view =='fgoods'&& selectedQuery == 'ps_quantum_check'||
+                view =='fgoods'&& selectedQuery == 'ps_item_cust'
                  ?         
                     <input
                         type="text"
