@@ -23,20 +23,15 @@ const DataTable = ({ custData }) => {
         pageNumbers.push(i);
     }
 
-    const visiblePages = pageNumbers.filter(page => {
-        return page === 1 || page === totalPages || (page >= currentPage - 2 && page <= currentPage + 2);
-    });
-
     return (
         <div className="m-5 overflow-x-auto shadow-md sm:rounded-lg">
             <div className="flex justify-between items-center py-2">
-
             </div>
-            <table className="min-w-full leading-normal table-fixed">
+            <table className="min-w-full leading-normal">
                 <thead>
                     <tr>
                         {currentItems.length > 0 && Object.keys(currentItems[0]).map(header => (
-                            <th key={header} className="px-5 py-3 border-b-2 border-gray-200 bg-purple text-left text-xs font-semibold text-white bg-purple uppercase tracking-wider">
+                            <th key={header} className="px-5 py-3 border-b-2 border-gray-200 bg-purple text-left text-xs font-semibold text-white uppercase tracking-wider">
                                 {header.replace(/_/g, ' ')}
                             </th>
                         ))}
@@ -50,9 +45,8 @@ const DataTable = ({ custData }) => {
                         setFilter(e.target.value);
                         setCurrentPage(1); // Reset to the first page with new filter
                     }}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded border-purple"
                 />
-                
                 <tbody>
                     {currentItems.map((item, index) => (
                         <tr key={index}>
@@ -65,7 +59,19 @@ const DataTable = ({ custData }) => {
                     ))}
                 </tbody>
             </table>
-            <div className="bg-white px-4 py-3 flex items-center justify-center border-t border-gray-200 sm:px-6">
+            <div className="bg-white px-4 py-3 flex items-center gap-10 border-t border-gray-200 sm:px-6">
+                <div>
+                <p>Number of rows:</p>
+                    <select
+                        value={itemsPerPage}
+                        onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                        className="outline-none text-gray-700 py-1 rounded border bg-white hover:bg-gray-50">
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
+                        <option value={50}>50</option>
+                    </select>
+                </div>
                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1} className="relative inline-flex items-center px-4 py-2 border text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-l-md">
                         First
@@ -73,7 +79,7 @@ const DataTable = ({ custData }) => {
                     <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} className="relative inline-flex items-center px-4 py-2 border text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                         Prev
                     </button>
-                    {visiblePages.map(number => (
+                    {pageNumbers.map(number => (
                         <button key={number} onClick={() => setCurrentPage(number)} className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === number ? 'bg-purple text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
                             {number}
                         </button>

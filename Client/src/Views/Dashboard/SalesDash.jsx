@@ -78,6 +78,7 @@ const Sales = () => {
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system),
+            'ps_item_usage_by_client': () => apiController.runQuery(query,queryParams,system),
             'summary_inv':() =>apiController.runQuery(query,queryParams,system),
             'usage':() =>{
                 let splitParams = queryParams.companyName.trim().split(',')
@@ -179,7 +180,10 @@ const Sales = () => {
                     <></>
                     }
                     {
-                    queryRan == 'ps_item_usage_by_location' ?
+                    queryRan == 'ps_item_usage_by_location' ||
+                    queryRan =='ps_item_usage_by_client'
+                    ? 
+                    
                         <div className="flex items-center justify-center h-16">
                             <button className= {`font-bold py-2 px-4 border border-blue-700 rounded ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"} `} onClick={()=> generateExcel()}>
                                 Generate Excel

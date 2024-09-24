@@ -131,8 +131,8 @@ SELECT
 	last_release_date
 FROM 
 	inventory as inv
-INNER JOIN Last_release AS lr ON lr.INVENTORY_CODE=inv.item_id
-WHERE rn =1
+LEFT JOIN Last_release AS lr ON lr.INVENTORY_CODE=inv.item_id
+WHERE  (rn =1 or rn is null)
     `
 }
 const custInventory_old = () => {

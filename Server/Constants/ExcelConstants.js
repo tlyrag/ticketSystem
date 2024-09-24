@@ -25,7 +25,10 @@ const templateFilePath = {
     },
     ps_item_usage_by_location: {
         monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
-    }
+    },
+    ps_item_usage_by_client: {
+        monarch:"P:\\Reports\\testing\\Templates\\ReceiveOrderPSTemplate.xlsx",
+    },
     
 
 }

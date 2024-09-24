@@ -101,11 +101,13 @@ const DynamicFilters = ({ search,isFetching,view }) => {
     const dropdownQueryOptions = {
         "sales": [
             {value:'',label:"Select Query"},
-            { value: 'reorder', label: 'Reorder Notice' },
             { value: 'order', label: 'Client Back Order' },
-            { value: 'usage', label: 'Item Usage' },
             { value: 'summary_inv', label: 'Customer Summary Inventory' },
-            { value: 'ps_item_usage_by_location', label: 'Item Usage by location'}
+            { value: 'usage', label: 'Item Usage' },
+            { value: 'ps_item_usage_by_location', label: 'Item Usage by location'},
+            { value: 'ps_item_usage_by_client', label: 'Item Usage by Company'},
+            { value: 'reorder', label: 'Reorder Notice' },
+            
         ],
         "fgoods":[
             {value:'',label:"Select Query"},
@@ -138,7 +140,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'order' :[<SystemDropDown/>,<StartDate/>,<EndDate/>],
             'usage' :[<SystemDropDown/>],
             'summary_inv' :[<SystemDropDown/>],
-            'ps_item_usage_by_location':[<SystemDropDown/>]
+            'ps_item_usage_by_location':[<SystemDropDown/>],
+            'ps_item_usage_by_client':[<SystemDropDown/>]
         },
         'fgoods': {
             '':[<></>],
@@ -184,6 +187,9 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         'summary_inv':{
             "companyName":textData.trim()
         },
+        'ps_item_usage_by_client':{
+            "companyName":textData.trim()
+        },
         'inv_variance_summary':"",
         'inv_variance_detail':"",
         "inv_variance_detail_no_subjobs":"",
@@ -204,6 +210,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         "sales":{
             "usage":"Enter Item ID",
             "summary_inv":"Enter Company Code",
+            'ps_item_usage_by_client':"Enter Company Code",
             "ps_item_usage_by_location":"Enter Item ID"
         },
         "fgoods":{
@@ -268,6 +275,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 view == "sales" && selectedQuery == "usage"||
                 view == "sales" && selectedQuery == "summary_inv"||
                 view == "sales" && selectedQuery == "ps_item_usage_by_location"||
+                view == "sales" && selectedQuery == "ps_item_usage_by_client"||
                 view == "fgoods" && selectedQuery == "job_receive_status" ||
                 view =='fgoods'&& selectedQuery == 'ps_quantum_check'||
                 view =='fgoods'&& selectedQuery == 'ps_item_cust'
