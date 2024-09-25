@@ -111,10 +111,12 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         ],
         "fgoods":[
             {value:'',label:"Select Query"},
-            { value: 'job_receive_status', label: 'Job Receive Status' },
-            { value: 'warehouse_search', label: 'Warehouse Search' },
             { value: 'ps_quantum_check', label: 'ItemID - PrintStream vs Quantum' },
+            { value: 'job_receive_status', label: 'Job Receive Status' },
+            { value: 'openOrders', label: 'PS Open Line Orders' },
             { value: 'ps_item_cust', label: 'PS items by customer' },
+            { value: 'warehouse_search', label: 'Warehouse Search' },
+            
         ],
         "administration":[
             {value:'',label:"Select Query"},
@@ -141,7 +143,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'usage' :[<SystemDropDown/>],
             'summary_inv' :[<SystemDropDown/>],
             'ps_item_usage_by_location':[<SystemDropDown/>],
-            'ps_item_usage_by_client':[<SystemDropDown/>]
+            'ps_item_usage_by_client':[<SystemDropDown/>],
         },
         'fgoods': {
             '':[<></>],
@@ -152,7 +154,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 {value:'',label:"Select System"},
                 { value: 'qm1', label: 'Quantum 1' },
                 { value: 'qm2', label: 'Quantum 2' },
-            ] }/>]
+            ] }/>],
+            'openOrders':[<SystemDropDown/>]
         },
         'administration': {
             '':[<></>],
@@ -196,6 +199,7 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         "pick_variance":"",
         "compare_inv_balance":"",
         "compare_inv_balance_view":"",
+        "openOrders":"",
         "ps_item_cust":{
             "companyName":textData.trim()
         },

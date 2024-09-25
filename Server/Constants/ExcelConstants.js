@@ -29,6 +29,9 @@ const templateFilePath = {
     ps_item_usage_by_client: {
         monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
     },
+    openOrders:{
+        monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
+    }
     
 
 }

@@ -43,7 +43,8 @@ const FgoodsDash = () => {
             'ps_quantum_check': () => {
                 let splitParams = queryParams.item_id.trim().split(',')
                 return apiController.runProc(query,splitParams,system)
-            } 
+            } ,
+            'openOrders':()=> apiController.runQuery(query,queryParams,system)
         }
 
         try {
