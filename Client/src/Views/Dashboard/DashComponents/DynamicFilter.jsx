@@ -95,7 +95,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
     const dropdownSystems =[    
         {value:'',label:"Select System"},
         { value: 'monarch', label: 'Monarch/PrintStream' },
-        { value: 'quantum', label: 'Quantum' },
+        { value: 'qm1', label: 'Quantum 1' },
+        { value: 'qm2', label: 'Quantum 2' },
     ] 
 
     const dropdownQueryOptions = {

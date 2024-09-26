@@ -72,7 +72,7 @@ const DataTable = ({ custData }) => {
                         <option value={50}>50</option>
                     </select>
                 </div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <nav className="relative z-0 inline  rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1} className="relative inline-flex items-center px-4 py-2 border text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-l-md">
                         First
                     </button>
