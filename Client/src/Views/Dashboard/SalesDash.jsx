@@ -72,9 +72,9 @@ const Sales = () => {
 
     
     const salesSearch = async (query,queryParams,system) => {
-        // console.log(query)
-        // console.log(queryParams)
-        // console.log(system)
+        console.log(query)
+        console.log(queryParams)
+        console.log(system)
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             'order':() =>apiController.runQuery(query,queryParams,system),
@@ -86,7 +86,11 @@ const Sales = () => {
             },
             'ps_item_usage_by_location': () => {
                 let splitParams = queryParams.itemId.trim().split(',')
-                return apiController.runQuery(query,splitParams,system)
+                if(system != "monarch") {
+                    return apiController.runQuery(query,splitParams,system)
+                }
+                    return apiController.runProc(query,splitParams,system)
+                
             }
         }
 
