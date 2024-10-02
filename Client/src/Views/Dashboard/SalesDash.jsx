@@ -77,13 +77,23 @@ const Sales = () => {
         console.log(system)
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
+            
             'order':() =>apiController.runQuery(query,queryParams,system),
-            'ps_item_usage_by_client': () => apiController.runQuery(query,queryParams,system),
+            
+            'ps_item_usage_by_client': () => {
+               if(system!= "monarch") {
+                    return  apiController.runQuery(query,queryParams,system)
+               }
+               return  apiController.runProc(query,queryParams,system)
+            } ,
+            
             'summary_inv':() =>apiController.runQuery(query,queryParams,system),
+            
             'usage':() =>{
                 let splitParams = queryParams.companyName.trim().split(',')
                 return apiController.runProc(query,splitParams,system)
             },
+            
             'ps_item_usage_by_location': () => {
                 let splitParams = queryParams.itemId.trim().split(',')
                 if(system != "monarch") {
