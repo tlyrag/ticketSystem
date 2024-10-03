@@ -16,7 +16,7 @@ const custNumber = (AR_) => {
 }
 const custInventory =() => {
     return `
-        with inventory as (
+               with inventory as (
 	SELECT
 		PAP.[INVENTORY CODE] as item_id,
 		CONCAT(PAP.DESCRIPTION1, PAP.DESCRIPTION2, PAP.DESCRIPTION3) AS Item_Description,
@@ -52,9 +52,9 @@ const custInventory =() => {
 	FROM 
 	-- Was right left changed to inner inner
 		gams1.DBO.job j
-	INNER JOIN 
+	right JOIN 
 		PrintStreamLive.dbo.PAPSIZE pap ON j.inventory_item_id = CONCAT('PS', pap.CODE)
-	INNER JOIN 
+	left JOIN 
 		PrintStreamLive.DBO.STKROLLS as RLS ON RLS.[PAPSIZE RECNUM]= pap.[DATAFLEX RECNUM ONE]
 		and RLS.MISJobNumber like concat(j.job_id,'%')
 	--inner join  PrintStreamLive.dbo.AR_Customer ar
@@ -68,6 +68,7 @@ const custInventory =() => {
 			where AR_CustomerACNO = @companyid
 		)
 		--and pap.[INVENTORY CODE] = 'LM-99DEC115'
+		--pap.[INVENTORY CODE] like 'CB-BUNNS&ROLLS'
 	GROUP BY 
 	   PAP.CODE, 
 		PAP.[INVENTORY CODE],
@@ -116,18 +117,27 @@ SELECT
 	ROW_NUMBER() OVER(ORDER BY inv.item_id) AS i,
 	item_id,
 	Item_Description,
-	date_received,
+	CASE 
+		WHEN date_received is null THEN 'Not Received'
+		else date_received
+	END AS date_received,
 	docket,
 	po_number,
 	OWNER_IND,
 	is_print_on_demand,
 	Obsolete,
 	unit_qty,
-	qty,
+	CASE 
+		WHEN qty is Null THEN 0
+		ELSE qty
+	END AS qty,
 	minimum_level,
 	reorder_quantity,
 	unit_sell,
-	subtotal,
+	CASE 
+		WHEN subtotal is null THEN 0
+		ELSE subtotal
+	END AS subtotal,
 	last_release_date
 FROM 
 	inventory as inv
