@@ -115,9 +115,14 @@ const runProc =(query,params,system) => {
         if (!response.ok) { 
             throw new Error(response.status.toString());
         }
+        
         return response.json();
     })
     .then(data => {
+        if (data == null) {
+            let empty = []
+            return empty
+        }
         return data;
     })
     .catch(err => {

@@ -319,7 +319,7 @@ export default(app) => {
         const system = req.body.system
         const params = req.body.params
         const query = req.body.query
-        console.log(`Running ${query}`)
+        console.log(`Running ${query} for ${system}`)
         try {
         //const paramsArray = Object.values(params);
         let response = await PythonServerController.runProc(query,params,system)
@@ -335,8 +335,8 @@ export default(app) => {
             response:response
         })
         }
-        catch{
-            console.log(`Unable to run ${query} for ${system}`)
+        catch(error){
+            console.log(`Unable to run ${query} for ${system} Error:${error}`)
             return res.status(500).json({
                 ok:false,
                 response:{"error":true,"statusCode":"500"}

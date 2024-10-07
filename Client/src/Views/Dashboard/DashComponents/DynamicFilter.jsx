@@ -102,8 +102,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
     const dropdownQueryOptions = {
         "sales": [
             {value:'',label:"Select Query"},
-            { value: 'order', label: 'Client Back Order' },
-            { value: 'summary_inv', label: 'Customer Summary Inventory' },
+            //{ value: 'order', label: 'Client Back Order' },
+            //{ value: 'summary_inv', label: 'Customer Summary Inventory' },
             { value: 'usage', label: 'Item Usage' },
             { value: 'ps_item_usage_by_location', label: 'Item Usage by location'},
             { value: 'ps_item_usage_by_client', label: 'Item Usage by Company'},
