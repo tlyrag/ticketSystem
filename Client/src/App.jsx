@@ -10,6 +10,7 @@ import Inventory from './Views/Dashboard/InventoryDash'
 import Sales from './Views/Dashboard/SalesDash';
 import DashBoardMain from './Views/Dashboard/DashBoardMain';
 import FgoodsDash from './Views/Dashboard/FgoodsDash';
+import FulfillmentDash from './Views/Dashboard/FulfillmentDash';
 import Administration from './Views/Dashboard/AdministrationDash';
 
 /// to be replaced once login is created
@@ -138,6 +139,7 @@ function App() {
             <Route path="/sales" element={<Sales  user={user}/>} />
             <Route path="/administration" element={<Administration  user={user}/>} />
             <Route path="/fgoods" element={<FgoodsDash  user={user}/>} />
+            <Route path="/fulfillment" element={<FulfillmentDash  user={user}/>} />
             <Route path="/dashboard" element={<DashBoardMain  user={user}/>} />
           </Routes>
         </div>

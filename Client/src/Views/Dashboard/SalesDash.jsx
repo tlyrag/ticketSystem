@@ -175,26 +175,23 @@ const Sales = () => {
              hasData ? 
                 <>
                     <DataTable custData={custData} /> 
+
+                        {/* generate PDF button */}
                     {
-                    queryRan == 'reorder' ||
-                    queryRan == 'ps_item_usage_by_client' 
-                    ?
-                        <div className="flex items-center justify-center h-16">
-                            <button className= {`font-bold py-2 px-4 border border-blue-700 rounded ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"} `} onClick={()=> generatePDF()}>
-                                Generate PDF
-                            </button> 
-                        </div>
+                        queryRan == 'reorder' || 
+                        queryRan == 'ps_item_usage_by_client' 
+                        ?
+                            <div className="flex items-center justify-center h-16">
+                                <button className= {`font-bold py-2 px-4 border border-blue-700 rounded ${btnIsSaving ? "bg-white text-purple":"bg-purple text-white"} `} onClick={()=> generatePDF()}>
+                                    Generate PDF
+                                </button> 
+                            </div>
                     : 
                         <></>
                     }
-                    {
-                    queryRan == 'reorder' ?             
-                        <div className="grid grid-cols-2 gap-4 mt-5">
-                            
-                        </div>
-                    :
-                    <></>
-                    }
+
+                        {/* generate Excel button */}
+                        
                     {
                     queryRan == 'ps_item_usage_by_location' ||
                     queryRan =='ps_item_usage_by_client'

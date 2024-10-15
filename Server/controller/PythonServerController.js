@@ -71,6 +71,7 @@ const reorderNotice = (params,system)=> {
 }
 
 const runQuery =(query,params,system) => {
+    console.log(`Running ${query} for ${system} with ${params}`)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +81,6 @@ const runQuery =(query,params,system) => {
             params: params
         })
     };
-
     return fetch(pythonModel.runQuery(), requestOptions)
     .then(response => {
         if (!response.ok) { 

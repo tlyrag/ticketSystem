@@ -128,6 +128,10 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             { value: 'compare_inv_balance', label: 'Compare Sum of FGJobClose to Inventory Balance' },
             { value: 'compare_inv_balance_view', label: 'Compare Sum of FGJobClose to the Inventory Balances, against the view' },
         ],
+        "fulfillment":[
+            {value:'',label:"Select Query"},
+            {value:'dsf_orders_detail',label:"DSF Order Detail"}
+        ]
 
     };
 
@@ -166,8 +170,14 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'pick_variance' :[<SystemDropDown/>],
             'compare_inv_balance' :[<SystemDropDown/>],
             'compare_inv_balance_view' :[<SystemDropDown/>]
+        },
+        'fulfillment' :{
+            '':[<></>],
+            'dsf_orders_detail' :[<SystemDropDown custom={true} systems={[ 
+                {value:'',label:"Select System"},   
+                {value:'dsf',label:"DSF"}
+            ] }/>]
         }
-
     }
 
     const queryParams ={
@@ -206,6 +216,9 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         },
         'ps_item_usage_by_location' :{
             "itemId" : textData.trim()
+        },
+        'dsf_orders_detail':{
+            "orderNum":textData.trim()
         }
         
             
@@ -222,7 +235,11 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             "job_receive_status":"Enter Job Number ex: 61234,65678,69878",
             "ps_quantum_check":"Enter item id",
             "ps_item_cust":"Enter Customer ID"
-            }
+        },
+        "fulfillment" : {
+            "dsf_orders_detail":"Enter order Number"
+        }
+
         }
     
     
@@ -283,7 +300,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 view == "sales" && selectedQuery == "ps_item_usage_by_client"||
                 view == "fgoods" && selectedQuery == "job_receive_status" ||
                 view =='fgoods'&& selectedQuery == 'ps_quantum_check'||
-                view =='fgoods'&& selectedQuery == 'ps_item_cust'
+                view =='fgoods'&& selectedQuery == 'ps_item_cust' ||
+                view =='fulfillment' && selectedQuery == 'dsf_orders_detail'
                  ?         
                     <input
                         type="text"
