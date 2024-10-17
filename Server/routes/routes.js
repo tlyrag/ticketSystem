@@ -238,12 +238,14 @@ export default(app) => {
             const hour = date.getHours().toString().padStart(2, '0');
             const minute = date.getMinutes().toString().padStart(2, '0');
             let today = `${year}_${month}_${day}_${hour}_${minute}`;
-
+    
             let inputPath = ExcelConstants.templatePath(query,system)
             let outputPath = ExcelConstants.outputPath(query,`${company}_${query}_${today}`)
             //console.log(custData)
-            console.log(query,system)
-            //console.log(outputPath)
+            //console.log(query,system)
+            // console.log(outputPath)
+            // console.log(company)
+            //console.log(inputPath)
             let response = await PythonServerController.generateExcel(custData,inputPath,outputPath)
             res.status(200).json({
                 ok: true,
