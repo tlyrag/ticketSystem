@@ -90,13 +90,11 @@ const getMonarchInventory =(company) => {
     
 }
 const generateExcelFile =(excelInfo) => {
-    console.log("Got Here")
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(excelInfo)
     };
-    console.log(excelInfo)
     return fetch(apiModel.generateExcel(), requestOptions)
     .then(response=> response.json())
     .then(data=>data)
@@ -156,8 +154,6 @@ const runProc = (query,params,system) => {
 }
 
 const genpdf = (custData,filter) => {
-    console.log(custData)
-    console.log(filter)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

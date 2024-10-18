@@ -283,10 +283,18 @@ export default(app) => {
             console.log(filterData)
             let response = await PythonServerController.genPdf(custData,filterData)
 
-            res.status(200).json({
-                ok:true,
-                response:response
-            })
+            if(response.error) {
+                res.status(500).json({
+                    ok:false,
+                    response:`Failed to Generate PDF Python Api Error`
+                })
+            } else {
+                res.status(200).json({
+                    ok:true,
+                    response:response
+                })
+            }
+  
         }
         catch(err) {
             console.log(`Failed to generate PDF ${err}`)

@@ -15,6 +15,7 @@ const Sales = () => {
     const [totalQtd, settotalQtd] = useState();
     const [queryRan, setqueryRan] = useState();
     const [outputPath, setoutputPath] = useState("");    
+    const [toastMessage, settoastMessage] = useState("");
     
     /// Handling View Item states///
     const [isFetching, setbtnIsFetching] = useState(false);
@@ -30,18 +31,25 @@ const Sales = () => {
             system:fetchedSystem,
             query_name:queryRan
         }
-      await apiController.genpdf(custData,pdfInfo)
+      let pdfResult =await apiController.genpdf(custData,pdfInfo)
       setbtnIsSaving(false);
+
+      if(!pdfResult.ok) {
+        settoastMessage(pdfResult.response)
+      } else {
+        settoastMessage("Excel Successfully Saved")
+      }
+
       setshowToast(true);
       
       setTimeout(() => {
+        
         setshowToast(false)
-      }, 2000);
+      }, 8000);
     }
 
     const generateExcel= async(query) => {
         try {    
-            console.log(custData)
             setbtnIsSaving(true)
             let excelInfo = {
                 custData:custData,
@@ -49,13 +57,13 @@ const Sales = () => {
                 company:"",
                 query:queryRan
             }
-            console.log(excelInfo)
             let excelresult = await apiController.generateExcelFile(excelInfo)
             setoutputPath(excelresult.outputPath)
             setbtnIsSaving(false);
             setshowToast(true);
             
             setTimeout(() => {
+                settoastMessage("Excel Successfully Saved")
                 setshowToast(false)
             }, 15000);
         } catch(error) {
@@ -72,9 +80,7 @@ const Sales = () => {
 
     
     const salesSearch = async (query,queryParams,system) => {
-        console.log(query)
-        console.log(queryParams)
-        console.log(system)
+
         const params = {
             'reorder': () => apiController.reorderNotice(queryParams,system),
             
@@ -206,7 +212,7 @@ const Sales = () => {
                             showToast ?
                                 <div id="toast-bottom-right" className="fixed flex items-center p-4 space-x-4 bg-purple divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                                     <div className=" font-normal text-white">
-                                        Excel successfully saved!
+                                        {toastMessage}
                                         <br/>
                                         {/* <a href= {`erase  ${outputPath}`} target="_blank">Download</a> */}
                                         {outputPath}
