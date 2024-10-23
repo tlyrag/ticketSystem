@@ -33,6 +33,7 @@ const FulfillmentDash = () => {
     const search = async (query,queryParams,system) => {
         const params = {
             'dsf_orders_detail':() =>apiController.runQuery(query,queryParams,system),
+            'item_nomination_info':() =>apiController.runQuery(query,queryParams,system),
         }
 
         try {

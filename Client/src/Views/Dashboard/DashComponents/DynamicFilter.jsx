@@ -130,7 +130,9 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         ],
         "fulfillment":[
             {value:'',label:"Select Query"},
-            {value:'dsf_orders_detail',label:"DSF Order Detail"}
+            {value:'dsf_orders_detail',label:"DSF Order Detail"},
+            {value:'item_nomination_info',label:"Item Nomination Info"},
+            
         ]
 
     };
@@ -152,7 +154,10 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         },
         'fgoods': {
             '':[<></>],
-            'job_receive_status' :[<SystemDropDown/>],
+            'job_receive_status' :[<SystemDropDown custom={true} systems={[ 
+                {value:'',label:"Select System"},   
+                {value:'monarch',label:"Monarch/PrintStream"}
+            ] }/>],
             'ps_item_cust':[<SystemDropDown/>],
             'warehouse_search' :[<SystemDropDown/>,<StartDate/>,<EndDate/>],
             'ps_quantum_check':[<SystemDropDown custom={true} systems={[    
@@ -176,6 +181,10 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             'dsf_orders_detail' :[<SystemDropDown custom={true} systems={[ 
                 {value:'',label:"Select System"},   
                 {value:'dsf',label:"DSF"}
+            ] }/>],
+            'item_nomination_info':[<SystemDropDown custom={true} systems={[ 
+                {value:'',label:"Select System"},   
+                {value:'monarch',label:"Monarch/PrintStream"}
             ] }/>]
         }
     }
@@ -219,7 +228,10 @@ const DynamicFilters = ({ search,isFetching,view }) => {
         },
         'dsf_orders_detail':{
             "orderNum":textData.trim()
-        }
+        },
+        'item_nomination_info':{
+            "companyName":textData.trim()
+        },
         
             
         
@@ -237,7 +249,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
             "ps_item_cust":"Enter Customer ID"
         },
         "fulfillment" : {
-            "dsf_orders_detail":"Enter order Number"
+            "dsf_orders_detail":"Enter order Number",
+            "item_nomination_info":"Enter Customer ID"
         }
 
         }
@@ -301,7 +314,8 @@ const DynamicFilters = ({ search,isFetching,view }) => {
                 view == "fgoods" && selectedQuery == "job_receive_status" ||
                 view =='fgoods'&& selectedQuery == 'ps_quantum_check'||
                 view =='fgoods'&& selectedQuery == 'ps_item_cust' ||
-                view =='fulfillment' && selectedQuery == 'dsf_orders_detail'
+                view =='fulfillment' && selectedQuery == 'dsf_orders_detail' ||
+                view =='fulfillment' && selectedQuery == 'item_nomination_info'
                  ?         
                     <input
                         type="text"

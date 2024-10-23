@@ -25,6 +25,8 @@ const templateFilePath = {
     },
     ps_item_usage_by_location: {
         monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
+        qm2:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
+        qm1:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
     },
     ps_item_usage_by_client: {
         monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
@@ -32,6 +34,9 @@ const templateFilePath = {
         qm1:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
     },
     openOrders:{
+        monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
+    },
+    item_nomination_info:{
         monarch:"P:\\Reports\\testing\\Templates\\EmptyTemplate.xlsx",
     }
     
